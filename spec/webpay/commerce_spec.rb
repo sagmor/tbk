@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Webpay::Commerce do
 
   before(:each) do
-    @commerce = Webpay::Commerce.certification
+    @commerce = Webpay::Commerce.test
   end
 
   it "should encrypt texts correctly" do

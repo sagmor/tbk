@@ -29,13 +29,25 @@ module Webpay
       digest.to_s
     end
 
+    def payment(attributes)
+      Payment.new(self,attributes)
+    end
+
+    def notification(params)
+      Notification.new(self,params)
+    end
+
+    def test?
+      @id == 597026016975
+    end
+
     protected
       def key_length
         @key.public_key.params["n"].to_int.size
       end
 
     class << self
-      def certification
+      def test
         self.new(597026016975, File.read(File.expand_path("../certification.pem", __FILE__)) )
       end
     end
