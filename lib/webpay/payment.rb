@@ -1,7 +1,5 @@
 module Webpay
   class Payment
-    HOST = "https://webpay.transbank.cl:443"
-    TEST_HOST = "https://certificacion.webpay.cl:6443"
     VALIDATION_PATH = "/cgi-bin/bp_validacion.cgi"
     PROCESS_PATH = "/cgi-bin/bp_revision.cgi"
 
@@ -21,7 +19,7 @@ module Webpay
 
     def token
       @token ||= begin
-        uri = URI.parse( (@commerce.test? ? TEST_HOST : HOST) + VALIDATION_PATH )
+        uri = URI.parse( @commerce.webpay_host + VALIDATION_PATH )
 
         response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
           post = Net::HTTP::Post.new uri.path
@@ -42,7 +40,7 @@ module Webpay
     end
 
     def redirect_url
-      "#{ @commerce.test? ? TEST_HOST : HOST }#{PROCESS_PATH}?TBK_VERSION_KCC=5.1&TBK_TOKEN=#{token}"
+      @comemrce.redirect_url_for(token)
     end
 
     def to_hash

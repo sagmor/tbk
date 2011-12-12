@@ -1,5 +1,8 @@
 module Webpay
   class Commerce
+    WEBPAY_HOST = "https://webpay.transbank.cl:443"
+    WEBPAY_TEST_HOST = "https://certificacion.webpay.cl:6443"
+
     def initialize(id, key)
       @id = id
       @key = OpenSSL::PKey::RSA.new(key)
@@ -41,6 +44,14 @@ module Webpay
       @id == 597026016975
     end
 
+    def webpay_host
+      test? ? WEBPAY_TEST_HOST : WEBPAY_HOST
+    end
+
+    def redirect_url_for(token)
+      "#{ @commerce.webpay_host }#{Payment::PROCESS_PATH}?TBK_VERSION_KCC=5.1&TBK_TOKEN=#{token}"
+    end
+
     protected
       def key_length
         @key.public_key.params["n"].to_int.size
@@ -48,7 +59,7 @@ module Webpay
 
     class << self
       def test
-        self.new(597026016975, File.read(File.expand_path("../certification.pem", __FILE__)) )
+        self.new(597026016975, File.read(File.expand_path("../test.pem", __FILE__)) )
       end
     end
   end

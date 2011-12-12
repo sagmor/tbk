@@ -13,7 +13,7 @@ def checkout
   @commerce = Webpay::Commerce.new(COMMERCE_ID, PRIVATE_KEY_FILE_CONTENT)
 
   @payment = @commerce.payment({
-    :ammount => 1000,
+    :amount => 1000,
     :order_id => "ORDER DATA",
     :session_id => "SESSION DATA", # OPTIONAL
     :notification_url => webpay_notification_url,
