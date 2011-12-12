@@ -1,0 +1,68 @@
+require 'spec_helper'
+
+describe Webpay::Commerce do
+
+  before(:each) do
+    @commerce = Webpay::Commerce.certification
+  end
+
+  it "should encrypt texts correctly" do
+    @commerce.encrypt(@commerce.id.to_s).should == <<EOF
+muaqS8iaHcxes2rwzQJHALWd81-QzWgn4DYwLUakxBv4NnqnaIqZl5qsIi1hLGza
+y2PPJP2M97dvS9g8GVKIWunTxHsxpR6N4nju-oOwiEWzMBZRgQX6PrYQPGmjv4hw
+wYaZH9snonods1phicY32jizLnDGcJ-wj.vNX6I77g0_
+EOF
+
+    @commerce.encrypt(<<EOF.chop).
+TBK_ORDEN_COMPRA=1234#TBK_CODIGO_COMERCIO=597026016975#TBK_ID_TRANSACCION=6725623074#TBK_URL_CGI_COMERCIO=/cgi-bin/tbk_bp_resultado.cgi#TBK_SERVIDOR_COMERCIO=184.106.139.65#TBK_PUERTO_COMERCIO=3000#TBK_VERSION_KCC=5.1#PARAMVERIFCOM=1#TBK_MAC=79a084a74d67eb91b9660b8e62cec1f1#TBK_MONTO=50000000#TBK_TIPO_TRANSACCION=TR_NORMAL#TBK_URL_EXITO=http://example.com/success#TBK_URL_FRACASO=http://example.com/failure
+EOF
+      should == <<EOF
+opoTnEzUfCkahN5rpUePP2cdeEM2m2ZwRXN1bedEuH0ZCL93RCpWE-F51zXzWKfs
+iyeCYogndcjT3dcrLoUnHOMP1krIf6fugzilDlt97k2j7hOXrjlQ5Q8fgFtErgYk
+xiDVKDIMPNhsSYw8y5F6GFiCnrmo2vAUUyPbk-gkQLa.4ngp62KrSkJVeOKVgdzh
+vPnw98317Oe5PnODnIlwM2XYt7N9gea0VK2IbP6ZSftERATBelKt-sh4PQY6xCLZ
+PlKjHvwF9vRCOg3cpgJzf.KnIbgosr0IghrqLQNnnr1JE7EOeBfpu5D2hf217GtI
+c5xR7wq6ghrb-QDmZdZRzELl7TpYIJsRyHVUTJUjjHfMexSWVyqz-b6Z.UdLn6sy
+0.MG.g2ZFhUWZRRcApXXwFYOjQEly8-TYe2.s4KWMF8oD8gjzkcVrcbbWIWD-ONj
+YUxH262Iat.dkPklZTNlMoeqoa7jSuMrdFCfxNut---0H..sEhxigA58dTqR6q0X
+F0inhuPcTCHnszNpwI1juSBFv.yAZbK9jQTjslE6Zm7Fl0sDAMmmjj4sGY623-Ok
+ekNkL6hwK1KlLNr3sSRoYaCmsJ1QRueDZpCFyUs9Nl3ETa6yImz3kCVD4T2AoZJD
+tFloMQUz8jesXFmjWnc3fEXbxw2uKvY24vHzVNJx5X8_
+EOF
+  end
+
+  it "should decrypt strings from Webpay" do
+    @commerce.decrypt(<<EOF).
+fgG2rm1KxrWvCda0nGgqll52GfFvrUjkq6n1T0jsksbSvuEYWrGMSwljfEZwHDc7
+uskax9sss15ugUZ-Er532L.Ol24VDNVpU.yO1YdWmRl7.I9McCK2ig.jZPp5XcFN
+KIF0sZAp2UMyTBK7qbcSrTmm0jubrrEib8VfV4cG7Ys_
+EOF
+      should == @commerce.id.to_s
+      
+    @commerce.decrypt(<<EOF).
+Hw2U6xB5eSl7proJ3tR.Owos0xAOxyMUcO7k62w2BdTCSzMJqPQpV1Bt9KKtq-LS
+VgPmLdNlu4xfqv-KgLLr.R-5BH-ylwCizD5JehLKu8FVYIUznXxh.oSCCHnrdxEP
+Q9DhAY5l0rHsIqxqk7uEeoTFjCMQ6r6WyoUlS935nzA2q3hv9sji-tVM5FVswGP0
+G6RU6PVfCq1NYNDQUjU3KoiRUmKfGHMpRW5Qn7c.KcmSf4AmBoOmW9AL02tv0PW1
+jNhPu.HI2UojO-Fn4cSf6FCcVBxxFWfOilO8lJCE6jZLIlbF2WJECU5v66Z82rBR
+zKTAJ2EM5EefLLL1GvHy3c1lQThC8kRvL7PovLuPWKTVUegQqT4wOchHYzsAU0SY
+gX8XLtN9-hpgfROPVec9C-Yj5HagfE6veJrB5xmLjmbFdsOjZD5V-rdSRYuYIBdz
+B-ZEQw3xqN-yze0pxpC8rxTMrU7wv30Jr7rIMPCiyReN4SLyj69n5rdKn-ZcFUoe
+Ituw0UwQCNhc3h25MtLL1rpjdtXnp2nWGSQaPH7MUver5K9Pj2WKXY68AvUeBbxl
+p6cpfx.PFxjvstrRT2tiigVMO9Do88yS46TEgwFWFfRWPC3kNjUlXaDMNbuSP3Z0
+xyhPg662gUMsdB.OTRJIoZBVnWddx0UpKdJ2kfnWdrE_
+EOF
+      should == <<EOF.chop
+TBK_ORDEN_COMPRA=orderid#TBK_TIPO_TRANSACCION=TR_NORMAL#TBK_RESPUESTA=0#TBK_MONTO=50000000#TBK_CODIGO_AUTORIZACION=281172#TBK_FINAL_NUMERO_TARJETA=6623#TBK_FECHA_CONTABLE=0922#TBK_FECHA_TRANSACCION=0922#TBK_HORA_TRANSACCION=191302#TBK_ID_SESION=session id#TBK_ID_TRANSACCION=6726867316#TBK_TIPO_PAGO=VN#TBK_NUMERO_CUOTAS=0#TBK_TASA_INTERES_MAX=0250#TBK_MAC=427ca2d8d63f34d156a0957629b50977
+EOF
+  end
+
+  it "should calculate a string's \"MAC\" using Webpay's method" do
+    @commerce.mac(<<EOF.chop).
+TBK_ORDEN_COMPRA=1234&TBK_CODIGO_COMERCIO=597026016975&TBK_ID_TRANSACCION=6725623074&TBK_URL_CGI_COMERCIO=/cgi-bin/tbk_bp_resultado.cgi&TBK_SERVIDOR_COMERCIO=184.106.139.65&TBK_PUERTO_COMERCIO=3000&TBK_VERSION_KCC=5.1&PARAMVERIFCOM=1&TBK_MONTO=50000000&TBK_TIPO_TRANSACCION=TR_NORMAL&TBK_URL_EXITO=http://example.com/success&TBK_URL_FRACASO=http://example.com/failure
+EOF
+      should == "79a084a74d67eb91b9660b8e62cec1f1"
+  end
+
+end
+
