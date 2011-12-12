@@ -2,7 +2,7 @@
 
 ## Disclaimer
 
-This work is not developed, supported nor endorsed in way by Transbank S.A.
+This work is not developed, supported nor endorsed in any way by Transbank S.A.
 
 ## Usage
 
