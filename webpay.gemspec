@@ -5,11 +5,11 @@ require "webpay/version"
 Gem::Specification.new do |s|
   s.name        = "webpay"
   s.version     = Webpay::VERSION
-  s.authors     = ["Sebastian Gamboa"]
-  s.email       = ["me@sagmor.com"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.author      = "Sebastian Gamboa"
+  s.email       = "me@sagmor.com"
+  s.homepage    = "https://github.com/sagmor/webpay"
+  s.summary     = %q{Transbank's Webpay payment service unofficial ruby implementation}
+  s.description = %q{Transbank's Webpay payment service unofficial ruby implementation}
 
   s.rubyforge_project = "webpay"
 
@@ -18,7 +18,5 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  # specify any dependencies here; for example:
   s.add_development_dependency "rspec", ">= 2.7.0"
-  # s.add_runtime_dependency "rest-client"
 end
