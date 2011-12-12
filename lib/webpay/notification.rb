@@ -1,7 +1,20 @@
+# -*- encoding: utf-8 -*-
 module Webpay
   class Notification
     ACK = "ACK"
     ERR = "ERR"
+
+    RESPONSE_CODES = {
+      '0' => 'Transacción aprobada.',
+      '-1' => 'Rechazo de tx. en B24, No autorizada',
+      '-2' => 'Transacción debe reintentarse.',
+      '-3' => 'Error en tx.',
+      '-4' => 'Rechazo de tx. En B24, No autorizada',
+      '-5' => 'Rechazo por error de tasa.',
+      '-6' => 'Excede cupo máximo mensual.',
+      '-7' => 'Excede límite diario por transacción.',
+      '-8' => 'Rubro no autorizado.'
+    }
 
     attr_reader :attributes
 
@@ -48,6 +61,10 @@ module Webpay
 
     def card_number
       attributes["TBK_FINAL_NUMERO_TARJETA"]
+    end
+
+    def message
+      RESPONSE_CODES[ attributes["TBK_RESPUESTA"] ]
     end
 
     def payed_at
