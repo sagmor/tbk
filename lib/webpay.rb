@@ -1,4 +1,5 @@
 require 'openssl'
+require 'net/https'
 
 require "webpay/version"
 require "webpay/base64"
