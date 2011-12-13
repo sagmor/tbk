@@ -68,11 +68,17 @@ module Webpay
     end
 
     def card_number
-      attributes["TBK_FINAL_NUMERO_TARJETA"]
+      if attributes["TBK_FINAL_NUMERO_TARJETA"]
+        "XXXX-XXXX-XXXX-#{attributes["TBK_FINAL_NUMERO_TARJETA"]}"
+      end
     end
 
     def message
       @message || RESPONSE_CODES[ attributes["TBK_RESPUESTA"] ]
+    end
+
+    def accepted?
+      @accepted
     end
 
     def payed_at
