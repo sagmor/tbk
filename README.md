@@ -37,24 +37,19 @@ def notification
 
   @notification = @commerce.notification(params)
 
-  if @notification.valid?
+  if @notification.success?
     # find order using @notification.order_id and @notification.session_id
     # validate amount using @notification.amount
 
     if # everything seems right
-
-      if @notification.success?
-        # Perform your business logic to mark the order as payed
-        # Note that if the payment is unsuccessfull we still have to answer ok to Webpay's notification
-      end
-
-      render :text => @notification.ok
-      return
+      # Perform your business logic to mark the order as payed
+      # Note that if the payment is unsuccessfull we still have to answer ok to Webpay's notification
+    else
+      @notification.reject "Optional rejection reason"
     end
   end
 
-  # Something is not OK
-  render :text => @notification.error
+  render :text => @notification.response
 end
 ```
 

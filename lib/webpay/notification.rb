@@ -21,22 +21,30 @@ module Webpay
     def initialize(commerce, params)
       @commerce = commerce
       @params = params
+      @accepted = true
 
       decrypt!
+      validate!
     end
 
     def valid?
-      @params['TBK_PARAM_DEC'] &&
-        @params['TBK_CODIGO_COMERCIO'] == @commerce.id.to_s &&
-        @commerce.decrypt(@params['TBK_CODIGO_COMERCIO_ENC']) == @commerce.id.to_s &&
-        @commerce.mac( @params['TBK_PARAM_DEC'].split("#")[0...-1].join("&") ) == mac
-    rescue
-      # Validation failed
-      false
+      if @valid.nil?
+        @valid = begin
+          @params['TBK_PARAM_DEC'] &&
+          @params['TBK_CODIGO_COMERCIO'] == @commerce.id.to_s &&
+          @commerce.decrypt(@params['TBK_CODIGO_COMERCIO_ENC']) == @commerce.id.to_s &&
+          @commerce.mac( @params['TBK_PARAM_DEC'].split("#")[0...-1].join("&") ) == mac
+        rescue
+          # Validation failed
+          false
+        end
+      end
+
+      @valid
     end
 
     def success?
-      attributes["TBK_RESPUESTA"] == "0"
+      @accepted && attributes["TBK_RESPUESTA"] == "0"
     end
 
     def amount
@@ -64,7 +72,7 @@ module Webpay
     end
 
     def message
-      RESPONSE_CODES[ attributes["TBK_RESPUESTA"] ]
+      @message || RESPONSE_CODES[ attributes["TBK_RESPUESTA"] ]
     end
 
     def payed_at
@@ -83,12 +91,13 @@ module Webpay
       attributes["TBK_MAC"]
     end
 
-    def ok
-      ACK
+    def reject(message=nil)
+      @message = message
+      @accepted = false
     end
 
-    def error
-      ERR
+    def response
+      @accepted ? ACK : ERR
     end
 
     protected
@@ -103,9 +112,17 @@ module Webpay
           end
         rescue
           # Decryption failed
+          @valid = false
+          reject "Decryption failed"
         end
         
         true
+      end
+
+      def validate!
+        unless valid?
+          reject "Validation failed"
+        end
       end
   end
 end
