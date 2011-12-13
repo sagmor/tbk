@@ -36,8 +36,8 @@ module Webpay
       Payment.new(self,attributes)
     end
 
-    def notification(params)
-      Notification.new(self,params)
+    def confirmation(params)
+      Confirmation.new(self,params)
     end
 
     def test?

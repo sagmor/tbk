@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 module Webpay
-  class Notification
+  class Confirmation
     ACK = "ACK"
     ERR = "ERR"
 

@@ -32,12 +32,12 @@ Given the way Webpay works the notification_url param must be an HTTP URL (Webpa
 ### Confirm a payment
 
 ```ruby
-def notification
+def confirmation
   @commerce = Webpay::Commerce.new(COMMERCE_ID, PRIVATE_KEY_FILE_CONTENT)
 
-  @notification = @commerce.notification(params)
+  @confirmation = @commerce.confirmation(params)
 
-  if @notification.success?
+  if @confirmation.success?
     # find order using @notification.order_id and @notification.session_id
     # validate amount using @notification.amount
 
@@ -45,11 +45,11 @@ def notification
       # Perform your business logic to mark the order as payed
       # Note that if the payment is unsuccessfull we still have to answer ok to Webpay's notification
     else
-      @notification.reject "Optional rejection reason"
+      @confirmation.reject "Optional rejection reason"
     end
   end
 
-  render :text => @notification.response
+  render :text => @confirmation.response
 end
 ```
 

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Webpay::Notification do
+describe Webpay::Confirmation do
 
   before(:each) do
-    @notification = Webpay::Commerce.test.notification({
+    @confirmation = Webpay::Commerce.test.confirmation({
       "TBK_PARAM" => <<EOF,
 Hw2U6xB5eSl7proJ3tR.Owos0xAOxyMUcO7k62w2BdTCSzMJqPQpV1Bt9KKtq-LS
 VgPmLdNlu4xfqv-KgLLr.R-5BH-ylwCizD5JehLKu8FVYIUznXxh.oSCCHnrdxEP
@@ -29,21 +29,21 @@ EOF
   end
 
   it "should be valid" do
-    @notification.should be_valid
+    @confirmation.should be_valid
   end
 
   it "should be successful" do
-    @notification.should be_success
+    @confirmation.should be_success
   end
 
   it "should calculate the payment time" do
-    payed_at = @notification.payed_at
+    payed_at = @confirmation.payed_at
     payed_at.should be_kind_of Time
     payed_at.should == Time.new(Time.now.year,9,22,19,13,2,-14400)
   end
 
   it "should return the payed ammount" do
-    amount = @notification.amount
+    amount = @confirmation.amount
     amount.should be_kind_of Float
     amount.should == 500000.0
   end
