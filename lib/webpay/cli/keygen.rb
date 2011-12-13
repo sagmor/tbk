@@ -11,13 +11,15 @@ module Webpay
       def setup(opts)
         opts.banner << "keygen [options]"
 
-        opts.on(:OPTIONAL, Integer, "-l", "--length", 
-            "Bit length of the generated key. [Default: #{DEFAULT_KEY_LENGTH}] ") do |v|
+        opts.on("-l", "--length LENGTH", Integer, 
+            "Bit length of the generated key.",
+            "   Defaults to #{DEFAULT_KEY_LENGTH}") do |v|
           @options[:length] = v
         end
 
-        opts.on(:OPTIONAL, String, "-o", "--output",
-            "Output file prefix. [Default: #{DEFAULT_PATH_PREFIX}]") do |v|
+        opts.on("-o", "--output PATH",
+            "Output file prefix.",
+            "   Defaults to  #{DEFAULT_PATH_PREFIX}") do |v|
           @options[:output] = v
         end
 
