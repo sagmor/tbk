@@ -3,9 +3,9 @@ module Webpay
     WEBPAY_HOST = "https://webpay.transbank.cl:443"
     WEBPAY_TEST_HOST = "https://certificacion.webpay.cl:6443"
 
-    def initialize(id, key)
-      @id = id
-      @key = OpenSSL::PKey::RSA.new(key)
+    def initialize(options)
+      @id = options[:id]
+      @key = OpenSSL::PKey::RSA.new(options[:key])
     end
 
     def encrypt(text)
@@ -59,7 +59,10 @@ module Webpay
 
     class << self
       def test
-        self.new(597026016975, File.read(File.expand_path("../test.pem", __FILE__)) )
+        self.new({
+          :id => 597026016975,
+          :key => File.read(File.expand_path("../test.pem", __FILE__))
+        })
       end
     end
   end
