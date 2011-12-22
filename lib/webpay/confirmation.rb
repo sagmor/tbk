@@ -23,8 +23,7 @@ module Webpay
       @params = params
       @accepted = true
 
-      decrypt!
-      validate!
+      decrypt! && validate!
     end
 
     def valid?
@@ -116,13 +115,14 @@ module Webpay
             key , value = attribute.split("=")
             @attributes[key] = value
           end
+
+          true
         rescue
           # Decryption failed
           @valid = false
           reject "Decryption failed"
+          false
         end
-        
-        true
       end
 
       def validate!
