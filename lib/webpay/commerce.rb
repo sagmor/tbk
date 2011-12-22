@@ -49,7 +49,7 @@ module Webpay
     end
 
     def redirect_url_for(token)
-      "#{ @commerce.webpay_host }#{Payment::PROCESS_PATH}?TBK_VERSION_KCC=5.1&TBK_TOKEN=#{token}"
+      "#{ webpay_host }#{Payment::PROCESS_PATH}?TBK_VERSION_KCC=5.1&TBK_TOKEN=#{token}"
     end
 
     protected
