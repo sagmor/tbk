@@ -61,9 +61,9 @@ module Webpay
         param << "TBK_ID_TRANSACCION=#{ id }"
 
         uri = URI.parse(@attributes[:notification_url])
-        param << "TBK_URL_CGI_COMERCIO=#{ @attributes[:notification_url] }"
-        param << "TBK_SERVIDOR_COMERCIO=#{ @attributes[:server_ip] || Webpay::Utils.local_ip }"
-        param << "TBK_PUERTO_COMERCIO=#{ @attributes[:server_port] || 80 }"
+        param << "TBK_URL_CGI_COMERCIO=#{ uri.path }"
+        param << "TBK_SERVIDOR_COMERCIO=#{ /(\d{1,3}\.){3}\d{3}/.match(uri.host) ? uri.host : Webpay::Utils.local_ip }"
+        param << "TBK_PUERTO_COMERCIO=#{ uri.port }"
 
         param << "TBK_VERSION_KCC=5.1"
         param << "PARAMVERIFCOM=1"
