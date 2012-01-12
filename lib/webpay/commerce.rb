@@ -1,6 +1,6 @@
 module Webpay
   class Commerce
-    WEBPAY_HOST = "https://webpay.transbank.cl:443"
+    WEBPAY_HOST = "https://webpay2g.transbank.cl:443"
     WEBPAY_TEST_HOST = "https://certificacion.webpay.cl:6443"
 
     def initialize(options)
