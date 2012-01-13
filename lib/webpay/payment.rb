@@ -43,6 +43,10 @@ module Webpay
       @comemrce.redirect_url_for(token)
     end
 
+    def process_url
+      @commerce.webpay_host + PROCESS_PATH
+    end
+
     def to_hash
       {
         'TBK_PARAM' => @commerce.encrypt(param),
