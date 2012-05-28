@@ -73,7 +73,9 @@ module Webpay
     end
 
     def message
-      @message || RESPONSE_CODES[ attributes["TBK_RESPUESTA"] ]
+      @message || I18n.translate( attributes["TBK_RESPUESTA"], scope: "webpay.responses", raise: true)
+    rescue
+      RESPONSE_CODES[ attributes["TBK_RESPUESTA"] ]
     end
 
     def accepted?
@@ -82,8 +84,8 @@ module Webpay
 
     def payed_at
       Time.new(
-        Time.now.year, 
-        attributes['TBK_FECHA_TRANSACCION'][0..1].to_i, 
+        Time.now.year,
+        attributes['TBK_FECHA_TRANSACCION'][0..1].to_i,
         attributes['TBK_FECHA_TRANSACCION'][2..3].to_i,
         attributes['TBK_HORA_TRANSACCION'][0..1].to_i,
         attributes['TBK_HORA_TRANSACCION'][2..3].to_i,

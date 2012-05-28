@@ -1,0 +1,13 @@
+---
+en:
+  webpay:
+    responses:
+        '0': Transaction approved.
+        '-1': Transaction rejected by bank.
+        '-2': Transaction must be retryed.
+        '-3': Transaction error.
+        '-4': Transaction rejected by bank.
+        '-5': Transaction rejected because of an interest rate error.
+        '-6': Transaction exceeds maximum monthly quota.
+        '-7': Transaction exceeds daily limit.
+        '-8': Unauthorized sector.

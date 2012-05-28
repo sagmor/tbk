@@ -9,3 +9,4 @@ require 'webpay/config'
 require "webpay/commerce"
 require "webpay/payment"
 require "webpay/confirmation"
+require "webpay/locales"

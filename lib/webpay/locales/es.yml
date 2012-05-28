@@ -1,0 +1,13 @@
+---
+es:
+  webpay:
+    responses:
+        '0': Transacción approvada
+        '-1': Banco rechazó la transacción
+        '-2': Transacción debe reintentarse.
+        '-3': Error en la transacción
+        '-4': Banco rechazó la transacción
+        '-5': Transacción rechazada por error de tasa.
+        '-6': Transacción excede cupo máximo mensual.
+        '-7': Transacción excede límite diario.
+        '-8': Rubro no autorizado.
