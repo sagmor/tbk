@@ -1,0 +1,96 @@
+module TBK
+  module Webpay
+    class Confirmation
+      RESPONSE_CODES = {
+        '0' => 'Transacción aprobada.',
+        '-1' => 'Rechazo de tx. en B24, No autorizada',
+        '-2' => 'Transacción debe reintentarse.',
+        '-3' => 'Error en tx.',
+        '-4' => 'Rechazo de tx. En B24, No autorizada',
+        '-5' => 'Rechazo por error de tasa.',
+        '-6' => 'Excede cupo máximo mensual.',
+        '-7' => 'Excede límite diario por transacción.',
+        '-8' => 'Rubro no autorizado.'
+      }
+
+      attr_accessor :commerce
+      attr_reader :raw
+      attr_reader :params
+
+      def initialize(options)
+        self.commerce = options[:commerce]
+        self.parse(options[:body])
+      end
+
+      def acknowledge
+        self.commerce.webpay_encrypt('ACK')
+      end
+
+      def order_id
+        self.params["TBK_ORDEN_COMPRA"]
+      end
+
+      def session_id
+        self.params["TBK_ID_SESION"]
+      end
+
+      def transaction_id
+        self.params["TBK_ID_TRANSACCION"]
+      end
+
+      def amount
+        self.params["TBK_MONTO"].to_f/100
+      end
+
+      def authorization
+        self.params["TBK_CODIGO_AUTORIZACION"]
+      end
+
+      def success?
+        self.params["TBK_RESPUESTA"] == "0"
+      end
+
+      def card_last_numbers
+        self.params["TBK_FINAL_NUMERO_TARJETA"]
+      end
+
+      def message
+        RESPONSE_CODES[self.params["TBK_RESPUESTA"]]
+      end
+
+      def paid_at
+        @paid_at ||= begin
+          year = Time.now.year
+          month = self.params["TBK_FECHA_TRANSACCION"][0...2].to_i
+          day = self.params["TBK_FECHA_TRANSACCION"][2...4].to_i
+          hour = self.params["TBK_HORA_TRANSACCION"][0...2].to_i
+          minutes = self.params["TBK_HORA_TRANSACCION"][2...4].to_i
+          seconds = self.params["TBK_HORA_TRANSACCION"][4...6].to_i
+          offset = TZInfo::Timezone.get('America/Santiago').period_for_utc(DateTime.new(year,month,day,hour,minutes,0)).utc_offset
+
+          Time.new(year, month, day, hour, minutes, seconds, offset)
+        end
+      end
+
+
+      protected
+        def parse(body)
+          @raw = body.to_s
+          @raw_params = {}
+          for line in @raw.split('&')
+            key, value = *line.scan( %r{^([A-Za-z0-9_.]+)\=(.*)$} ).flatten
+            @raw_params[key] = CGI.unescape(value)
+          end
+
+          puts @raw_params.inspect
+
+          @params = {}
+          decrypted_params = self.commerce.webpay_decrypt(@raw_params['TBK_PARAM'])
+          for line in decrypted_params.split('#')
+            key, value = *line.scan( %r{^([A-Za-z0-9_.]+)\=(.*)$} ).flatten
+            @params[key] = CGI.unescape(value)
+          end
+        end
+    end
+  end
+end

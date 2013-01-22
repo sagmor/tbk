@@ -5,15 +5,19 @@ require 'tbk/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "tbk"
-  gem.version       = Tbk::VERSION
+  gem.version       = TBK::VERSION::GEM
   gem.authors       = ["Seba Gamboa"]
   gem.email         = ["me@sagmor.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Ruby implementation of Transbank's Webpay protocol}
+  gem.summary       = "Pure Ruby implementation of Transbank's Webpay KCC #{TBK::VERSION::KCC}"
+  gem.homepage      = TBK::VERSION::WEBSITE
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+
+  gem.add_dependency "tzinfo"
+  gem.add_development_dependency "rake"
+  gem.add_development_dependency "rspec"
 end

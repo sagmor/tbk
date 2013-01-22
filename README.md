@@ -1,6 +1,6 @@
 # Tbk
 
-TODO: Write a gem description
+Pure Ruby implementation of Transbank's Webpay KCC 6.0
 
 ## Installation
 
@@ -18,7 +18,50 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Start a payment:
+```ruby
+class WebpayController < ApplicationController
+
+  # Start a payment
+  def pay
+    commerce = TBK::Commerce.new({
+      id: '597026007976',
+      test: true,
+      key: TBK::TEST_KEY
+    })
+
+    payment = TBK::Webpay::Payment.new({
+      commerce: commerce,
+      amount: 1000,
+      order_id: 'ORDER_ID',
+      success_url: webpay_success_url,
+      confirmation_url: webpay_confirmation_url(host: 'SERVER_IP_ADDRESS')
+    })
+
+    redirect_to payment.redirect_url
+  end
+
+  # Confirmation callback
+  def confirmation
+    commerce = TBK::Commerce.new({
+      id: '597026007976',
+      test: true,
+      key: TBK::TEST_KEY
+    })
+
+    confirmation = TBK::Webpay::Confirmation.new({
+      commerce: commerce,
+      body: request.body
+    })
+
+    # Order data is in confirmation.order_id
+    # Paid amount is at confirmation.amount
+
+    # Acknowledge payment
+    render text: confirmation.acknowledge
+  end
+end
+```
 
 ## Contributing
 
