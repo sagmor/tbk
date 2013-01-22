@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>TBK Gem by sagmor</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>TBK Gem</h1>
+          <h2>Pure Ruby implementation of Transbank's Webpay protocol</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/sagmor/tbk/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/sagmor/tbk/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/sagmor/tbk" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h3>Sample usage</h3>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">WebpayController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="c1"># Start a payment</span>
+  <span class="k">def</span> <span class="nf">pay</span>
+    <span class="n">commerce</span> <span class="o">=</span> <span class="no">TBK</span><span class="o">::</span><span class="no">Commerce</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
+      <span class="nb">id</span><span class="p">:</span> <span class="s1">'597026007976'</span><span class="p">,</span>
+      <span class="nb">test</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+      <span class="n">key</span><span class="p">:</span> <span class="no">TBK</span><span class="o">::</span><span class="no">TEST_KEY</span>
+    <span class="p">})</span>
+
+    <span class="n">payment</span> <span class="o">=</span> <span class="no">TBK</span><span class="o">::</span><span class="no">Webpay</span><span class="o">::</span><span class="no">Payment</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
+      <span class="n">commerce</span><span class="p">:</span> <span class="n">commerce</span><span class="p">,</span>
+      <span class="n">amount</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+      <span class="n">order_id</span><span class="p">:</span> <span class="s1">'ORDER_ID'</span><span class="p">,</span>
+      <span class="n">success_url</span><span class="p">:</span> <span class="n">webpay_success_url</span><span class="p">,</span>
+      <span class="n">confirmation_url</span><span class="p">:</span> <span class="n">webpay_confirmation_url</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="s1">'SERVER_IP_ADDRESS'</span><span class="p">)</span>
+    <span class="p">})</span>
+
+    <span class="n">redirect_to</span> <span class="n">payment</span><span class="o">.</span><span class="n">redirect_url</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Confirmation callback</span>
+  <span class="k">def</span> <span class="nf">confirmation</span>
+    <span class="n">commerce</span> <span class="o">=</span> <span class="no">TBK</span><span class="o">::</span><span class="no">Commerce</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
+      <span class="nb">id</span><span class="p">:</span> <span class="s1">'597026007976'</span><span class="p">,</span>
+      <span class="nb">test</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+      <span class="n">key</span><span class="p">:</span> <span class="no">TBK</span><span class="o">::</span><span class="no">TEST_KEY</span>
+    <span class="p">})</span>
+
+    <span class="n">confirmation</span> <span class="o">=</span> <span class="no">TBK</span><span class="o">::</span><span class="no">Webpay</span><span class="o">::</span><span class="no">Confirmation</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
+      <span class="n">commerce</span><span class="p">:</span> <span class="n">commerce</span><span class="p">,</span>
+      <span class="n">body</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span>
+    <span class="p">})</span>
+
+    <span class="c1"># Order data is in confirmation.order_id</span>
+    <span class="c1"># Paid amount is at confirmation.amount</span>
+
+    <span class="c1"># Acknowledge payment</span>
+    <span class="n">render</span> <span class="n">text</span><span class="p">:</span> <span class="n">confirmation</span><span class="o">.</span><span class="n">acknowledge</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div>
+        </section>
+
+        <footer>
+          TBK Gem is maintained by <a href="https://github.com/sagmor">sagmor</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+                  <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-18659564-5");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+      </div>
+    </div>
+  </body>
+</html>
