@@ -4,8 +4,9 @@ module TBK
     attr_accessor :key
 
     def initialize(options)
-      self.id = options[:id]
+      @test = options[:test]
 
+      self.id = options[:id]
       raise TBK::CommerceError, "Missing commerce id" if self.id.nil?
 
       self.key = case options[:key]
@@ -13,6 +14,8 @@ module TBK
         OpenSSL::PKey::RSA.new(options[:key])
       when OpenSSL::PKey::RSA.new
         options[:key]
+      when nil
+        TBK_TEST_KEY if self.test?
       end
 
       raise TBK::CommerceError, "Missing commerce key" if self.key.nil?
@@ -22,6 +25,5 @@ module TBK
     def test?
       false
     end
-
   end
 end
