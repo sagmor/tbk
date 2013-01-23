@@ -18,6 +18,8 @@ module TBK
         encripted_text = cipher.update(signature + text) + cipher.final
 
         Base64.encode64( iv + encripted_key + encripted_text).strip
+      rescue RuntimeError => error
+        raise TBK::Webpay::EncryptionError, "Encryption failed", error
       end
 
       def webpay_decrypt(encripted_text)
@@ -40,6 +42,8 @@ module TBK
         end
 
         text
+      rescue => error
+        raise TBK::Webpay::EncryptionError, "Decryption failed", error
       end
     end
   end
