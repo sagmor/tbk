@@ -3,7 +3,6 @@ require "openssl"
 require "securerandom"
 require "net/https"
 require "cgi"
-require "tzinfo"
 
 require "tbk/version"
 require "tbk/errors"

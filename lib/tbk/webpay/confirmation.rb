@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module TBK
   module Webpay
     class Confirmation
@@ -26,6 +27,14 @@ module TBK
         self.commerce.webpay_encrypt('ACK')
       end
 
+      def rejection
+        self.commerce.webpay_encrypt('ERR')
+      end
+
+      def success?
+        self.params["TBK_RESPUESTA"] == "0"
+      end
+
       def order_id
         self.params["TBK_ORDEN_COMPRA"]
       end
@@ -46,8 +55,8 @@ module TBK
         self.params["TBK_CODIGO_AUTORIZACION"]
       end
 
-      def success?
-        self.params["TBK_RESPUESTA"] == "0"
+      def card_display_number
+        "XXXX-XXXX-XXXX-#{ card_last_numbers }"
       end
 
       def card_last_numbers
@@ -66,7 +75,13 @@ module TBK
           hour = self.params["TBK_HORA_TRANSACCION"][0...2].to_i
           minutes = self.params["TBK_HORA_TRANSACCION"][2...4].to_i
           seconds = self.params["TBK_HORA_TRANSACCION"][4...6].to_i
-          offset = TZInfo::Timezone.get('America/Santiago').period_for_utc(DateTime.new(year,month,day,hour,minutes,0)).utc_offset
+
+          offset = if defined? TZInfo::Timezone
+            # Use tzinfo gem if available
+            TZInfo::Timezone.get('America/Santiago').period_for_utc(DateTime.new(year,month,day,hour,minutes,0)).utc_offset
+          else
+            -14400
+          end
 
           Time.new(year, month, day, hour, minutes, seconds, offset)
         end

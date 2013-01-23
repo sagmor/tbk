@@ -25,5 +25,9 @@ module TBK
     def test?
       false
     end
+
+    def key_bytes
+      self.key.n.num_bytes
+    end
   end
 end
