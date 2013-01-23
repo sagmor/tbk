@@ -15,7 +15,7 @@ module TBK
       when OpenSSL::PKey::RSA.new
         options[:key]
       when nil
-        TBK::TEST_KEY if self.test?
+        TBK::TEST_COMMERCE_KEY if self.test?
       end
 
       raise TBK::CommerceError, "Missing commerce key" if self.key.nil?
@@ -24,6 +24,10 @@ module TBK
 
     def test?
       @test || false
+    end
+
+    def production?
+      !self.test?
     end
 
     def key_bytes
