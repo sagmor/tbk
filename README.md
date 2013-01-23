@@ -55,7 +55,7 @@ class WebpayController < ApplicationController
 
     confirmation = TBK::Webpay::Confirmation.new({
       commerce: commerce,
-      body: request.body
+      post: request.body
     })
 
     # Order data is in confirmation.order_id

@@ -19,7 +19,7 @@ module TBK
 
       def initialize(options)
         self.commerce = options[:commerce]
-        self.parse(options[:body])
+        self.parse(options[:post])
       end
 
       def acknowledge
@@ -74,8 +74,8 @@ module TBK
 
 
       protected
-        def parse(body)
-          @raw = body.to_s
+        def parse(post)
+          @raw = post.to_s
           @raw_params = {}
           for line in @raw.split('&')
             key, value = *line.scan( %r{^([A-Za-z0-9_.]+)\=(.*)$} ).flatten
