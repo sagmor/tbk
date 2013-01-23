@@ -23,7 +23,7 @@ module TBK
     end
 
     def test?
-      false
+      @test || false
     end
 
     def key_bytes
