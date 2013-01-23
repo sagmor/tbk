@@ -37,7 +37,7 @@ module TBK
             <input type="hidden" name="TBK_PARAM" value="#{ self.param }">
             <input type="hidden" name="TBK_VERSION_KCC" value="#{ TBK::VERSION::KCC }">
             <input type="hidden" name="TBK_CODIGO_COMERCIO" value="#{ self.commerce.id }">
-            <input type="hidden" name="TBK_KEY_ID" value="#{ TBK::KEY_ID }">
+            <input type="hidden" name="TBK_KEY_ID" value="#{ self.commerce.webpay_key_id }">
             #{ yield if block_given? }
           </form>
         EOF
@@ -78,7 +78,7 @@ module TBK
                 post.set_form_data({
                   'TBK_VERSION_KCC' => TBK::VERSION::KCC,
                   'TBK_CODIGO_COMERCIO' => self.commerce.id,
-                  'TBK_KEY_ID' => TBK::KEY_ID,
+                  'TBK_KEY_ID' => self.commerce.webpay_key_id,
                   'TBK_PARAM' => self.param
                 })
 
@@ -133,7 +133,7 @@ module TBK
           params << "TBK_PUERTO_COMERCIO=#{ uri.port }"
 
           params << "TBK_VERSION_KCC=#{ TBK::VERSION::KCC }"
-          params << "TBK_KEY_ID=#{ TBK::KEY_ID }"
+          params << "TBK_KEY_ID=#{ self.commerce.webpay_key_id }"
           params << "PARAMVERIFCOM=1"
 
           if include_pseudomac
