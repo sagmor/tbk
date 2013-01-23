@@ -7,7 +7,7 @@ Pure Ruby implementation of Transbank's Webpay KCC 6.0
 This library is not developed, supported nor endorsed in any way by Transbank S.A.
 and is the result of reverse engineering Transbank's Integration Kit (aka. KCC)
 for interoperability purposes allowed by
-[Chilean Law 20.435 Article 71 Ñ Section b(http://www.leychile.cl/Navegar?idNorma=1012827)
+[Chilean Law 20.435 Article 71 Ñ Section b](http://www.leychile.cl/Navegar?idNorma=1012827)
 
 ## Usage
 
