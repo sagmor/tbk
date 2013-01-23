@@ -6,5 +6,6 @@ require "cgi"
 
 require "tbk/version"
 require "tbk/errors"
+require "tbk/keys"
 require "tbk/commerce"
 require "tbk/webpay"
