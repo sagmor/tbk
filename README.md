@@ -69,7 +69,7 @@ class WebpayController < ApplicationController
     # Read the confirmation data from the request
     @confirmation = TBK::Webpay::Confirmation.new({
       commerce: @commerce,
-      post: request.body
+      post: request.raw_post
     })
 
     if # confirmation is invalid for some reason (wrong order_id or amount, double payment, etc...)
