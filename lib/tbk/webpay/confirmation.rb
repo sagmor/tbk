@@ -27,7 +27,7 @@ module TBK
         self.commerce.webpay_encrypt('ACK')
       end
 
-      def rejection
+      def reject
         self.commerce.webpay_encrypt('ERR')
       end
 

@@ -17,49 +17,79 @@ Add this line to your application's Gemfile:
 gem 'tbk'
 ```
 
-Setup a controller on your application
+To start a payment from your application
 
 ```ruby
 class WebpayController < ApplicationController
 
+  # ...
+
   # Start a payment
   def pay
+    # Initialyze you commerce
     commerce = TBK::Commerce.new({
-      id: '597026007976',
-      test: true,
-      key: TBK::TEST_KEY
+      id: YOUR_COMMERCE_ID,
+      key: YOUR_RSA_KEY
     })
 
+    # Setup the payment
     payment = TBK::Webpay::Payment.new({
       commerce: commerce,
-      amount: 1000,
-      order_id: 'ORDER_ID',
+      amount: ORDER_AMOUNT,
+      order_id: ORDER_ID,
       success_url: webpay_success_url,
-      confirmation_url: webpay_confirmation_url(host: 'SERVER_IP_ADDRESS')
+      # Webpay can only access the HTTP protocol to a direct IP address (keep that in mind)
+      confirmation_url: webpay_confirmation_url(host: SERVER_IP_ADDRESS, protocol: 'http'),
+
+      # Optionaly supply:
+      session_id: SOME_SESSION_VALUE,
+      failure_url: webpay_failure_url # success_url is used by default
     })
 
+    # Redirect the user to Webpay
     redirect_to payment.redirect_url
   end
 
-  # Confirmation callback
+  # ...
+end
+```
+
+And to process a payment
+```ruby
+class WebpayController < ApplicationController
+
+  # ...
+
+  # Confirmation callback executed from Webpay servers
   def confirmation
+    # Initialyze you commerce
     commerce = TBK::Commerce.new({
-      id: '597026007976',
-      test: true,
-      key: TBK::TEST_KEY
+      id: YOUR_COMMERCE_ID,
+      key: YOUR_RSA_KEY
     })
 
+    # Read the confirmation data from the request
     confirmation = TBK::Webpay::Confirmation.new({
       commerce: commerce,
       post: request.body
     })
 
-    # Order data is in confirmation.order_id
-    # Paid amount is at confirmation.amount
+    if # confirmation is invalid for some reason (wrong order_id or amount, double payment, etc...)
+      render text: confirmation.reject
+      return # reject and stop execution
+    end
+
+    if confirmation.success?
+      # EXITO!
+      # perform everything you have to do here.
+    end
 
     # Acknowledge payment
     render text: confirmation.acknowledge
   end
+
+  # ...
+
 end
 ```
 
