@@ -19,7 +19,9 @@ module TBK
       attr_reader :params
 
       def initialize(options)
-        self.commerce = options[:commerce]
+        options = { :post => options } if options.is_a?(String)
+
+        self.commerce = options[:commerce] || TBK::Commerce.default_commerce
         self.parse(options[:post])
       end
 

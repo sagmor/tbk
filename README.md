@@ -21,6 +21,15 @@ Add this line to your application's Gemfile:
 gem 'tbk'
 ```
 
+Configure your commerce
+
+```ruby
+TBK::configure do |config|
+  config.commerce_id YOUR_COMMERCE_ID
+  config.commerce_key YOUR_RSA_KEY
+end
+```
+
 To start a payment from your application
 
 ```ruby
@@ -30,15 +39,8 @@ class WebpayController < ApplicationController
 
   # Start a payment
   def pay
-    # Initialyze you commerce
-    @commerce = TBK::Commerce.new({
-      id: YOUR_COMMERCE_ID,
-      key: YOUR_RSA_KEY
-    })
-
     # Setup the payment
     @payment = TBK::Webpay::Payment.new({
-      commerce: @commerce,
       amount: ORDER_AMOUNT,
       order_id: ORDER_ID,
       success_url: webpay_success_url,
@@ -67,17 +69,8 @@ class WebpayController < ApplicationController
 
   # Confirmation callback executed from Webpay servers
   def confirmation
-    # Initialyze you commerce
-    @commerce = TBK::Commerce.new({
-      id: YOUR_COMMERCE_ID,
-      key: YOUR_RSA_KEY
-    })
-
     # Read the confirmation data from the request
-    @confirmation = TBK::Webpay::Confirmation.new({
-      commerce: @commerce,
-      post: request.raw_post
-    })
+    @confirmation = TBK::Webpay::Confirmation.new(request.raw_post)
 
     if # confirmation is invalid for some reason (wrong order_id or amount, double payment, etc...)
       render text: @confirmation.reject

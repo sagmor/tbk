@@ -10,7 +10,7 @@ module TBK
       attr_accessor :failure_url
 
       def initialize(options = {})
-        self.commerce = options[:commerce]
+        self.commerce = options[:commerce] || TBK::Commerce.default_commerce
         self.amount = options[:amount]
         self.order_id = options[:order_id]
         self.session_id = options[:session_id]
