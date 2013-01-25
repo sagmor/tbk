@@ -1,6 +1,3 @@
 require 'bundler/setup'
 require 'tbk'
-
-RSpec.configure do |config|
-  # some (optional) config here
-end
+Dir["spec/support/**/*.rb"].each { |f| require File.expand_path(f) }
