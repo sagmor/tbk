@@ -1,4 +1,9 @@
-Pure Ruby implementation of Transbank's Webpay KCC 6.0 protocol
+### About
+[![Gem Version](https://badge.fury.io/rb/tbk.png)](http://badge.fury.io/rb/tbk)
+
+This is a pure ruby replacement of Transbank's Binary Integration Kit (aka. KCC)
+developed to simplify the integration with it's payment gateway Webpay.
+
 
 ### Disclaimer
 
