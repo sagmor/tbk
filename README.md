@@ -53,6 +53,7 @@ end
 ```
 
 And to process a payment
+
 ```ruby
 class WebpayController < ApplicationController
 

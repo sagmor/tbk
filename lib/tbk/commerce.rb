@@ -1,19 +1,30 @@
+
 module TBK
+  # Represents a commerce registered with Transbank
   class Commerce
+
+    # The registered commerce id
     attr_accessor :id
+
+    # The commerce secret RSA key
     attr_accessor :key
 
-    def initialize(options)
-      @test = options[:test]
+    # Initialyzes a new commerce
+    # @param [Hash] attributes The commerce attributes
+    # @option attributes [Integer] :id The commerce ID
+    # @option attributes [String|OpenSSL::PKey::RSA] :key The commerce RSA private key
+    # @option attributes [Boolean] :test flag to set commerce in test mode
+    def initialize(attributes)
+      @test = attributes[:test]
 
-      self.id = options[:id]
+      self.id = attributes[:id]
       raise TBK::CommerceError, "Missing commerce id" if self.id.nil?
 
-      self.key = case options[:key]
+      self.key = case attributes[:key]
       when String
-        OpenSSL::PKey::RSA.new(options[:key])
+        OpenSSL::PKey::RSA.new(attributes[:key])
       when OpenSSL::PKey::RSA.new
-        options[:key]
+        attributes[:key]
       when nil
         TEST_COMMERCE_KEY if self.test?
       end
@@ -22,14 +33,17 @@ module TBK
       raise TBK::CommerceError, "Commerce key must be a RSA private key" unless self.key.private?
     end
 
+    # @return [Boolean] wether or not the commerce is in test mode
     def test?
       @test || false
     end
 
+    # @return [Boolean] wether or not the commerce is in production mode
     def production?
       !self.test?
     end
 
+    # @return [Integer] RSA key bytes
     def key_bytes
       self.key.n.num_bytes
     end
