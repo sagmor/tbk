@@ -4,10 +4,13 @@ module TBK
   class Commerce
 
     # The registered commerce id
-    attr_accessor :id
+    attr_reader :id
 
     # The commerce secret RSA key
-    attr_accessor :key
+    attr_reader :key
+
+    # The commerce environment
+    attr_reader :environment
 
     # Initialyzes a new commerce
     # @param [Hash] attributes The commerce attributes
@@ -15,7 +18,8 @@ module TBK
     # @option attributes [String|OpenSSL::PKey::RSA] :key The commerce RSA private key
     # @option attributes [Boolean] :test flag to set commerce in test mode
     def initialize(attributes)
-      @test = attributes[:test]
+      @environment = (attributes[:environment] || :production).to_sym
+      raise TBK::CommerceError, "Invalid commerce environment" unless [:production,:test].include? @environment
 
       self.id = attributes[:id]
       raise TBK::CommerceError, "Missing commerce id" if self.id.nil?
@@ -35,12 +39,12 @@ module TBK
 
     # @return [Boolean] wether or not the commerce is in test mode
     def test?
-      @test || false
+      self.environment == :test
     end
 
     # @return [Boolean] wether or not the commerce is in production mode
     def production?
-      !self.test?
+      self.environment == :production
     end
 
     # @return [Integer] RSA key bytes
