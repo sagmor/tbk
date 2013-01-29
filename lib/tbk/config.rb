@@ -35,7 +35,7 @@ module TBK
   #     end
   #
   # @yield [TBK::Config] The config object
-  def configure(&block)
+  def self.configure(&block)
     yield(self.config)
     nil
   end
