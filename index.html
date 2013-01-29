@@ -32,10 +32,12 @@
       <section>
         <h3>About</h3>
 
-<p><a href="http://badge.fury.io/rb/tbk"><img src="https://badge.fury.io/rb/tbk.png" alt="Gem Version"></a></p>
-
 <p>This is a pure ruby replacement of Transbank's Binary Integration Kit (aka. KCC)
 developed to simplify the integration with it's payment gateway Webpay.</p>
+
+<p><a href="http://badge.fury.io/rb/tbk"><img src="https://badge.fury.io/rb/tbk.png" alt="Gem Version"></a>
+<a href="https://travis-ci.org/sagmor/tbk"><img src="https://travis-ci.org/sagmor/tbk.png" alt="Build Status"></a>
+<a href="https://codeclimate.com/github/sagmor/tbk"><img src="https://codeclimate.com/badge.png" alt="Code Climate"></a></p>
 
 <h3>Disclaimer</h3>
 
@@ -51,6 +53,14 @@ for interoperability purposes as allowed by
 <div class="highlight"><pre><span class="n">gem</span> <span class="s1">'tbk'</span>
 </pre></div>
 
+<p>Configure your commerce</p>
+
+<div class="highlight"><pre><span class="no">TBK</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">commerce_id</span> <span class="no">YOUR_COMMERCE_ID</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">commerce_key</span> <span class="no">YOUR_RSA_KEY</span>
+<span class="k">end</span>
+</pre></div>
+
 <p>To start a payment from your application</p>
 
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">WebpayController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
@@ -59,15 +69,8 @@ for interoperability purposes as allowed by
 
   <span class="c1"># Start a payment</span>
   <span class="k">def</span> <span class="nf">pay</span>
-    <span class="c1"># Initialyze you commerce</span>
-    <span class="vi">@commerce</span> <span class="o">=</span> <span class="no">TBK</span><span class="o">::</span><span class="no">Commerce</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
-      <span class="nb">id</span><span class="p">:</span> <span class="no">YOUR_COMMERCE_ID</span><span class="p">,</span>
-      <span class="n">key</span><span class="p">:</span> <span class="no">YOUR_RSA_KEY</span>
-    <span class="p">})</span>
-
     <span class="c1"># Setup the payment</span>
     <span class="vi">@payment</span> <span class="o">=</span> <span class="no">TBK</span><span class="o">::</span><span class="no">Webpay</span><span class="o">::</span><span class="no">Payment</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
-      <span class="n">commerce</span><span class="p">:</span> <span class="vi">@commerce</span><span class="p">,</span>
       <span class="n">amount</span><span class="p">:</span> <span class="no">ORDER_AMOUNT</span><span class="p">,</span>
       <span class="n">order_id</span><span class="p">:</span> <span class="no">ORDER_ID</span><span class="p">,</span>
       <span class="n">success_url</span><span class="p">:</span> <span class="n">webpay_success_url</span><span class="p">,</span>
@@ -95,17 +98,8 @@ for interoperability purposes as allowed by
 
   <span class="c1"># Confirmation callback executed from Webpay servers</span>
   <span class="k">def</span> <span class="nf">confirmation</span>
-    <span class="c1"># Initialyze you commerce</span>
-    <span class="vi">@commerce</span> <span class="o">=</span> <span class="no">TBK</span><span class="o">::</span><span class="no">Commerce</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
-      <span class="nb">id</span><span class="p">:</span> <span class="no">YOUR_COMMERCE_ID</span><span class="p">,</span>
-      <span class="n">key</span><span class="p">:</span> <span class="no">YOUR_RSA_KEY</span>
-    <span class="p">})</span>
-
     <span class="c1"># Read the confirmation data from the request</span>
-    <span class="vi">@confirmation</span> <span class="o">=</span> <span class="no">TBK</span><span class="o">::</span><span class="no">Webpay</span><span class="o">::</span><span class="no">Confirmation</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
-      <span class="n">commerce</span><span class="p">:</span> <span class="vi">@commerce</span><span class="p">,</span>
-      <span class="n">post</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">raw_post</span>
-    <span class="p">})</span>
+    <span class="vi">@confirmation</span> <span class="o">=</span> <span class="no">TBK</span><span class="o">::</span><span class="no">Webpay</span><span class="o">::</span><span class="no">Confirmation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">raw_post</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="c1"># confirmation is invalid for some reason (wrong order_id or amount, double payment, etc...)</span>
       <span class="n">render</span> <span class="n">text</span><span class="p">:</span> <span class="vi">@confirmation</span><span class="o">.</span><span class="n">reject</span>
