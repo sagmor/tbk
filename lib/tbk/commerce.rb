@@ -15,7 +15,7 @@ module TBK
      # @return [Symbol] the commerce environment
     attr_reader :environment
 
-    # Initialyzes a new commerce
+    # Initializes a new commerce
     # @param [Hash] attributes The commerce attributes
     # @option attributes [Integer] :id The commerce ID
     # @option attributes [String|OpenSSL::PKey::RSA] :key The commerce RSA private key
@@ -40,12 +40,12 @@ module TBK
       raise TBK::CommerceError, "Commerce key must be a RSA private key" unless self.key.private?
     end
 
-    # @return [Boolean] wether or not the commerce is in test mode
+    # @return [Boolean] whether or not the commerce is in test mode
     def test?
       self.environment == :test
     end
 
-    # @return [Boolean] wether or not the commerce is in production mode
+    # @return [Boolean] whether or not the commerce is in production mode
     def production?
       self.environment == :production
     end
@@ -58,9 +58,9 @@ module TBK
     # @return [TBK::Commerce] The default commerce
     def self.default_commerce
       @default_commerce ||= Commerce.new({
-        id: TBK.config.commerce_id,
-        key: TBK.config.commerce_key,
-        environment: TBK.config.environment
+        :id => TBK.config.commerce_id,
+        :key => TBK.config.commerce_key,
+        :environment => TBK.config.environment
       }) unless TBK.config.commerce_id.nil?
     end
 
