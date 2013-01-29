@@ -1,5 +1,6 @@
 ### About
 [![Gem Version](https://badge.fury.io/rb/tbk.png)](http://badge.fury.io/rb/tbk)
+[![Build Status](https://travis-ci.org/sagmor/tbk.png)](https://travis-ci.org/sagmor/tbk)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/sagmor/tbk)
 
 This is a pure ruby replacement of Transbank's Binary Integration Kit (aka. KCC)
