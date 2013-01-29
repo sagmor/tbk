@@ -24,7 +24,7 @@ gem 'tbk'
 Configure your commerce
 
 ```ruby
-TBK::configure do |config|
+TBK.configure do |config|
   config.commerce_id YOUR_COMMERCE_ID
   config.commerce_key YOUR_RSA_KEY
 end
