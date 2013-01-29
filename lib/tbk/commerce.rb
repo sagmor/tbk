@@ -30,7 +30,7 @@ module TBK
       @key = case attributes[:key]
       when String
         OpenSSL::PKey::RSA.new(attributes[:key])
-      when OpenSSL::PKey::RSA.new
+      when OpenSSL::PKey::RSA
         attributes[:key]
       when nil
         TEST_COMMERCE_KEY if self.test?
