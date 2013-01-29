@@ -24,10 +24,10 @@ module TBK
       @environment = (attributes[:environment] || :production).to_sym
       raise TBK::CommerceError, "Invalid commerce environment" unless [:production,:test].include? @environment
 
-      self.id = attributes[:id]
+      @id = attributes[:id]
       raise TBK::CommerceError, "Missing commerce id" if self.id.nil?
 
-      self.key = case attributes[:key]
+      @key = case attributes[:key]
       when String
         OpenSSL::PKey::RSA.new(attributes[:key])
       when OpenSSL::PKey::RSA.new
