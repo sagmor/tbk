@@ -14,7 +14,7 @@ module TBK
     end
 
     # Sets the default commerce environment
-    # @returns [Symbol] the default commerce environment
+    # @return [Symbol] the default commerce environment
     def environment(environment = nil)
       @environment = environment if environment
       (@environment || ENV['TBK_COMMERCE_ENVIRONMENT'] || :production.to_sym)
@@ -22,7 +22,7 @@ module TBK
   end
 
   # Returns the configuration object
-  # @returns [TBK::Config] the configuration object
+  # @return [TBK::Config] the configuration object
   def self.config
     @config ||= Config.new
   end

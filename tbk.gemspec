@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.summary       = "Pure Ruby implementation of Transbank's Webpay KCC #{TBK::VERSION::KCC}"
   gem.homepage      = TBK::VERSION::WEBSITE
 
-  gem.files         = `git ls-files`.split($/)
+  gem.files         = `git ls-files`.split($/).grep(%r{^(?!example)/})
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
