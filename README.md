@@ -28,6 +28,9 @@ Configure your commerce
 TBK.configure do |config|
   config.commerce_id YOUR_COMMERCE_ID
   config.commerce_key YOUR_RSA_KEY
+  config.confirmation_url_ip_address '127.0.0.1'
+  config.confirmation_url_port '80'
+  config.confirmation_url_protocol 'http'
 end
 ```
 
@@ -46,7 +49,10 @@ class WebpayController < ApplicationController
       order_id: ORDER_ID,
       success_url: webpay_success_url,
       # Webpay can only access the HTTP protocol to a direct IP address (keep that in mind)
-      confirmation_url: webpay_confirmation_url(host: SERVER_IP_ADDRESS, protocol: 'http'),
+      confirmation_url: webpay_confirmation_url(
+                              host: TBK.config.confirmation_url_ip_address,
+                              port: TBK.config.confirmation_url_port,
+                              protocol: TBK.config.confirmation_url_protocol),
 
       # Optionaly supply:
       session_id: SOME_SESSION_VALUE,
