@@ -9,7 +9,9 @@ module WebpayHelper
   #
   # Human readable attributes can be SPECIFIED by a normative document which
   # specifies their formats. And it can be REQUIRED by a normative document
-  # which, however, does not specify any format for them.
+  # which, however, does not specify any format for them. Finally, they can be
+  # DOCUMENTED, in which case they're not required and their formats are not
+  # specified.
   #
   # Human readable attributes helpers are named in spanish in order to fit
   # closely to the business domain they belong to.
@@ -201,7 +203,7 @@ module WebpayHelper
     when 'SI'
       "3 cuotas sin intereses"
     when 'CI'
-      "Cuotas"
+      "Cuotas comercio"
     when 'VD'
       "Débito"
     else
@@ -209,7 +211,7 @@ module WebpayHelper
     end
   end
 
-  # Public: Human readable Transbank transaction type as specified in [1].
+  # Public: Human readable Transbank transaction type as documented in [1].
   #
   #   [1]: Manual de integración KCC 6.0, sección 8
   #
