@@ -10,6 +10,9 @@ module Example
       config.environment :test
       config.commerce_id 597026007976
       # config.commerce_key SOME_RSA_KEY
+      config.confirmation_url_ip_address '127.0.0.1'
+      config.confirmation_url_port '80'
+      config.confirmation_url_protocol 'http'
     end
 
     # Configure the default encoding used in templates for Ruby 1.9.

@@ -10,7 +10,10 @@ class WebpayController < ApplicationController
       amount: 5000.0,
       order_id: SecureRandom.hex(6),
       success_url: webpay_success_url,
-      confirmation_url: webpay_confirmation_url(host: '127.0.0.1', port: 80, protocol: 'http'),
+      confirmation_url: webpay_confirmation_url(
+                              host: TBK.config.confirmation_url_ip_address,
+                              port: TBK.config.confirmation_url_port,
+                              protocol: TBK.config.confirmation_url_protocol),
       session_id: SecureRandom.hex(6),
       failure_url: webpay_failure_url # success_url is used by default
     })
