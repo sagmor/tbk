@@ -30,7 +30,7 @@ module Webpay
           http.request post
         end
 
-        if response.code == "200" && /ERROR=([a-zA-Z0-9]+)/.match(response.body)[1] == "0"
+        if response.code == "200" && /ERROR=([a-zA-Z0-9]+)/.match(response.body) && /ERROR=([a-zA-Z0-9]+)/.match(response.body)[1] == "0"
           /TOKEN=([a-zA-Z0-9]+)/.match(response.body)[1]
         end
       end
