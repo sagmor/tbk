@@ -21,7 +21,7 @@ module Webpay
       @token ||= begin
         uri = URI.parse( @commerce.webpay_host + VALIDATION_PATH )
 
-        response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+        response = Net::HTTP.start(uri.host, uri.port, use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
           post = Net::HTTP::Post.new uri.path
           post.set_form_data(to_hash)
           post["user-agent"] = "Webpay Gem"
