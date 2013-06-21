@@ -4,8 +4,8 @@ module Webpay
     WEBPAY_TEST_HOST = "https://certificacion.webpay.cl:6443"
 
     def initialize(options)
-      @id = options[:id]
-      @key = OpenSSL::PKey::RSA.new(options[:key])
+      @id = options[:id] || options['id']
+      @key = OpenSSL::PKey::RSA.new(options[:key] || options['key'])
     end
 
     def encrypt(text)
