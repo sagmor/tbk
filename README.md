@@ -1,5 +1,10 @@
 # Webpay Gem
 
+## WARNING
+
+Don't use this code since it uses a version of Transbank's KCC that posses a
+serious security vulnerability.
+
 ## Disclaimer
 
 This work is not developed, supported nor endorsed in any way by Transbank S.A.
