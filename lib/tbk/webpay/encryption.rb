@@ -1,3 +1,4 @@
+# encoding: us-ascii
 module TBK
   module Webpay
     module Encryption
