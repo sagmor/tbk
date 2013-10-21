@@ -17,7 +17,7 @@ module TBK
     # @return [Symbol] the default commerce environment
     def environment(environment = nil)
       @environment = environment if environment
-      (@environment || ENV['TBK_COMMERCE_ENVIRONMENT'] || :production.to_sym)
+      (@environment || ENV['TBK_COMMERCE_ENVIRONMENT'] || :production).to_sym
     end
   end
 
