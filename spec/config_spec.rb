@@ -47,7 +47,7 @@ describe TBK::Config do
     it "should read it's default value from the environment" do
       ENV.should_receive(:[]).with('TBK_COMMERCE_ENVIRONMENT').and_return "test"
 
-      expect(TBK.config.environment).to be_eql "test"
+      expect(TBK.config.environment).to be_eql :test
     end
   end
 
