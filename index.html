@@ -30,32 +30,35 @@
 
       </header>
       <section>
-        <h3>About</h3>
+        <h3>
+<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h3>
+
+<p><a href="http://badge.fury.io/rb/tbk"><img src="https://badge.fury.io/rb/tbk.png" alt="Gem Version"></a>
+<a href="https://travis-ci.org/sagmor/tbk"><img src="https://travis-ci.org/sagmor/tbk.png" alt="Build Status"></a>
+<a href="https://codeclimate.com/github/sagmor/tbk"><img src="https://codeclimate.com/github/sagmor/tbk.png" alt="Code Climate"></a></p>
 
 <p>This is a pure ruby replacement of Transbank's Binary Integration Kit (aka. KCC)
 developed to simplify the integration with it's payment gateway Webpay.</p>
 
-<p><a href="http://badge.fury.io/rb/tbk"><img src="https://badge.fury.io/rb/tbk.png" alt="Gem Version"></a>
-<a href="https://travis-ci.org/sagmor/tbk"><img src="https://travis-ci.org/sagmor/tbk.png" alt="Build Status"></a>
-<a href="https://codeclimate.com/github/sagmor/tbk"><img src="https://codeclimate.com/badge.png" alt="Code Climate"></a></p>
-
-<h3>Disclaimer</h3>
+<h3>
+<a name="disclaimer" class="anchor" href="#disclaimer"><span class="octicon octicon-link"></span></a>Disclaimer</h3>
 
 <p>This library is not developed, supported nor endorsed in any way by Transbank S.A.
 and is the result of reverse engineering Transbank's Integration Kit (aka. KCC)
 for interoperability purposes as allowed by
 <a href="http://www.leychile.cl/Navegar?idNorma=1012827">Chilean Law 20.435 Article 71 Ñ Section b</a></p>
 
-<h3>Usage</h3>
+<h3>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h3>
 
 <p>Add this line to your application's Gemfile:</p>
 
-<div class="highlight"><pre><span class="n">gem</span> <span class="s1">'tbk'</span>
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s1">'tbk'</span>
 </pre></div>
 
 <p>Configure your commerce</p>
 
-<div class="highlight"><pre><span class="no">TBK</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+<div class="highlight highlight-ruby"><pre><span class="no">TBK</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
   <span class="n">config</span><span class="o">.</span><span class="n">commerce_id</span> <span class="no">YOUR_COMMERCE_ID</span>
   <span class="n">config</span><span class="o">.</span><span class="n">commerce_key</span> <span class="no">YOUR_RSA_KEY</span>
 <span class="k">end</span>
@@ -63,19 +66,19 @@ for interoperability purposes as allowed by
 
 <p>To start a payment from your application</p>
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">WebpayController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">WebpayController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="c1"># ...</span>
 
   <span class="c1"># Start a payment</span>
   <span class="k">def</span> <span class="nf">pay</span>
     <span class="c1"># Setup the payment</span>
-    <span class="vi">@payment</span> <span class="o">=</span> <span class="no">TBK</span><span class="o">::</span><span class="no">Webpay</span><span class="o">::</span><span class="no">Payment</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
-      <span class="n">amount</span><span class="p">:</span> <span class="no">ORDER_AMOUNT</span><span class="p">,</span>
+    <span class="vi">@payment</span> <span class="o">=</span> <span class="ss">TBK</span><span class="p">:</span><span class="ss">:Webpay</span><span class="o">::</span><span class="no">Payment</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
+      <span class="ss">amount</span><span class="p">:</span> <span class="no">ORDER_AMOUNT</span><span class="p">,</span>
       <span class="n">order_id</span><span class="p">:</span> <span class="no">ORDER_ID</span><span class="p">,</span>
       <span class="n">success_url</span><span class="p">:</span> <span class="n">webpay_success_url</span><span class="p">,</span>
       <span class="c1"># Webpay can only access the HTTP protocol to a direct IP address (keep that in mind)</span>
-      <span class="n">confirmation_url</span><span class="p">:</span> <span class="n">webpay_confirmation_url</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="no">SERVER_IP_ADDRESS</span><span class="p">,</span> <span class="n">protocol</span><span class="p">:</span> <span class="s1">'http'</span><span class="p">),</span>
+      <span class="n">confirmation_url</span><span class="p">:</span> <span class="n">webpay_confirmation_url</span><span class="p">(</span><span class="ss">host</span><span class="p">:</span> <span class="no">SERVER_IP_ADDRESS</span><span class="p">,</span> <span class="ss">protocol</span><span class="p">:</span> <span class="s1">'http'</span><span class="p">),</span>
 
       <span class="c1"># Optionaly supply:</span>
       <span class="n">session_id</span><span class="p">:</span> <span class="no">SOME_SESSION_VALUE</span><span class="p">,</span>
@@ -92,17 +95,17 @@ for interoperability purposes as allowed by
 
 <p>And to process a payment</p>
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">WebpayController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">WebpayController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="c1"># ...</span>
 
   <span class="c1"># Confirmation callback executed from Webpay servers</span>
   <span class="k">def</span> <span class="nf">confirmation</span>
     <span class="c1"># Read the confirmation data from the request</span>
-    <span class="vi">@confirmation</span> <span class="o">=</span> <span class="no">TBK</span><span class="o">::</span><span class="no">Webpay</span><span class="o">::</span><span class="no">Confirmation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">raw_post</span><span class="p">)</span>
+    <span class="vi">@confirmation</span> <span class="o">=</span> <span class="ss">TBK</span><span class="p">:</span><span class="ss">:Webpay</span><span class="o">::</span><span class="no">Confirmation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">raw_post</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="c1"># confirmation is invalid for some reason (wrong order_id or amount, double payment, etc...)</span>
-      <span class="n">render</span> <span class="n">text</span><span class="p">:</span> <span class="vi">@confirmation</span><span class="o">.</span><span class="n">reject</span>
+      <span class="n">render</span> <span class="ss">text</span><span class="p">:</span> <span class="vi">@confirmation</span><span class="o">.</span><span class="n">reject</span>
       <span class="k">return</span> <span class="c1"># reject and stop execution</span>
     <span class="k">end</span>
 
@@ -112,7 +115,7 @@ for interoperability purposes as allowed by
     <span class="k">end</span>
 
     <span class="c1"># Acknowledge payment</span>
-    <span class="n">render</span> <span class="n">text</span><span class="p">:</span> <span class="vi">@confirmation</span><span class="o">.</span><span class="n">acknowledge</span>
+    <span class="n">render</span> <span class="ss">text</span><span class="p">:</span> <span class="vi">@confirmation</span><span class="o">.</span><span class="n">acknowledge</span>
   <span class="k">end</span>
 
   <span class="c1"># ...</span>
@@ -120,7 +123,8 @@ for interoperability purposes as allowed by
 <span class="k">end</span>
 </pre></div>
 
-<h3>Contributing</h3>
+<h3>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h3>
 
 <ol>
 <li>Fork it</li>
