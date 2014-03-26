@@ -26,6 +26,19 @@ module TBK
               webpay_server: (payment.commerce.test? ? 'https://certificacion.webpay.cl' : 'https://webpay.transbank.cl')
             }
           end
+
+          configuration_log_file do |file|
+            response_uri = URI.parse(payment.confirmation_url)
+
+            file.write CONFIGURATION_FORMAT % {
+              commerce_id: payment.commerce.id,
+              server_ip: response_uri.host,
+              server_port: response_uri.ip,
+              response_path: response_uri.path,
+              webpay_server: (payment.commerce.test? ? 'https://certificacion.webpay.cl' : 'https://webpay.transbank.cl'),
+              webpay_server_port: (payment.commerce.test? ? '6433' : '433')
+            }
+          end
         end
 
         def confirmation(confirmation)
@@ -59,6 +72,10 @@ module TBK
             Time.now
           end
 
+          def configuration_log_file(&block)
+            log_file(CONFIGURATION_FILE_NAME, 'w+', &block)
+          end
+
           def events_log_file(&block)
             name = EVENTS_LOG_FILE_NAME_FORMAT % now.strftime(EVENTS_LOG_FILE_DATE_FORMAT)
 
@@ -71,10 +88,10 @@ module TBK
             log_file(name, &block)
           end
 
-          def log_file(name, &block)
+          def log_file(name, mode='a+', &block)
             path = self.directory.join(name)
 
-            File.open(path, 'a+', &block)
+            File.open(path, mode, &block)
           end
 
 
@@ -84,6 +101,7 @@ module TBK
 
         LOG_DATE_FORMAT = "%d%m%Y".freeze
         LOG_TIME_FORMAT = "%H%M%S".freeze
+        CONFIGURATION_FILE_NAME = "tbk_config.dat".freeze
         EVENTS_LOG_FILE_NAME_FORMAT = "TBK_EVN%s.log".freeze
         EVENTS_LOG_FILE_DATE_FORMAT = "%Y%m%d".freeze
         BITACORA_LOG_FILE_NAME_FORMAT = "tbk_bitacora_TR_NORMAL_%s.log".freeze
@@ -140,6 +158,25 @@ EOF
           TBK_VCI=%<TBK_VCI>s;
           TBK_MAC=%<TBK_MAC>s
         }.join(' ').freeze
+
+        CONFIGURATION_FORMAT = <<EOF.freeze
+IDCOMERCIO = %<commerce_id>s
+MEDCOM = 1
+TBK_KEY_ID = 101
+PARAMVERIFCOM = 1
+URLCGICOM = %<response_path>s
+SERVERCOM = %<server_ip>s
+PORTCOM = %<server_port>s
+WHITELISTCOM = ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 0123456789./:=&?_
+HOST = %<server_ip>s
+WPORT = %<server_port>s
+URLCGITRA = /filtroUnificado/bp_revision.cgi
+URLCGIMEDTRA = /filtroUnificado/bp_validacion.cgi
+SERVERTRA = %<webpay_server>s
+PORTTRA = %<webpay_server_port>s
+PREFIJO_CONF_TR = HTML_
+HTML_TR_NORMAL = http://127.0.0.1/webpay/notify
+EOF
 
       end
     end
