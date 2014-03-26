@@ -7,6 +7,7 @@ module TBK
         # Allow logger customization with a block
         def initialize(&block)
           block.call(self) if block
+          validate!
         end
 
         # Abstract method to log a payment
@@ -18,6 +19,15 @@ module TBK
         def confirmation(confirmation)
           raise NotImplementedError, "TBK::Webpay::Logger::BaseLogger subclass must implement #confirmation method"
         end
+
+        private
+          # Method to validate that the logger is propperly setted up
+          def validate!
+            if self.class == TBK::Webpay::Logger::BaseLogger
+              raise ArgumentError, "You can't use TBK::Webpay::Logger::BaseLogger directly"
+            end
+          end
+
       end
     end
   end
