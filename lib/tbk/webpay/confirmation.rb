@@ -99,14 +99,16 @@ module TBK
             @raw_params[key] = CGI.unescape(value)
           end
 
-          puts @raw_params.inspect
-
           @params = {}
           decrypted_params = self.commerce.webpay_decrypt(@raw_params['TBK_PARAM'])
           for line in decrypted_params.split('#')
             key, value = *line.scan( %r{^([A-Za-z0-9_.]+)\=(.*)$} ).flatten
             @params[key] = CGI.unescape(value)
           end
+
+          TBK::Webpay.logger.confirmation(self)
+
+          true
         end
     end
   end

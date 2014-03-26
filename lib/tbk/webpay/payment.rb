@@ -64,41 +64,48 @@ module TBK
           end
         end
 
-        def token
-          @token ||= begin
-            uri = URI.parse( self.validation_url )
+        def fetch_token
+          uri = URI.parse( self.validation_url )
 
-            response = nil
-            until response && response['location'].nil?
-              uri = URI.parse( response.nil? ? self.validation_url : response['location'] )
+          response = nil
+          until response && response['location'].nil?
+            uri = URI.parse( response.nil? ? self.validation_url : response['location'] )
 
-              response = Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
-                post = Net::HTTP::Post.new uri.path
-                post["user-agent"] = "TBK/#{ TBK::VERSION::GEM } (Ruby/#{ RUBY_VERSION }; +#{ TBK::VERSION::WEBSITE })"
-                post.set_form_data({
-                  'TBK_VERSION_KCC' => TBK::VERSION::KCC,
-                  'TBK_CODIGO_COMERCIO' => self.commerce.id,
-                  'TBK_KEY_ID' => self.commerce.webpay_key_id,
-                  'TBK_PARAM' => self.param
-                })
+            response = Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
+              post = Net::HTTP::Post.new uri.path
+              post["user-agent"] = "TBK/#{ TBK::VERSION::GEM } (Ruby/#{ RUBY_VERSION }; +#{ TBK::VERSION::WEBSITE })"
+              post.set_form_data({
+                'TBK_VERSION_KCC' => TBK::VERSION::KCC,
+                'TBK_CODIGO_COMERCIO' => self.commerce.id,
+                'TBK_KEY_ID' => self.commerce.webpay_key_id,
+                'TBK_PARAM' => self.param
+              })
 
-                # http.read_timeout = Webpay::Config.timeout
-                http.request post
-              end
+              # http.read_timeout = Webpay::Config.timeout
+              http.request post
             end
-
-            unless response.code == "200"
-              raise TBK::Webpay::PaymentError, "Payment token generation failed"
-            end
-
-            response = self.commerce.webpay_decrypt(response.body)
-
-            unless /ERROR=([a-zA-Z0-9]+)/.match(response)[1] == "0"
-              raise TBK::Webpay::PaymentError, "Payment token generation failed"
-            end
-
-            /TOKEN=([a-zA-Z0-9]+)/.match(response)[1]
           end
+
+          unless response.code == "200"
+            raise TBK::Webpay::PaymentError, "Payment token generation failed"
+          end
+
+          response = self.commerce.webpay_decrypt(response.body)
+
+          unless /ERROR=([a-zA-Z0-9]+)/.match(response)[1] == "0"
+            raise TBK::Webpay::PaymentError, "Payment token generation failed"
+          end
+
+          /TOKEN=([a-zA-Z0-9]+)/.match(response)[1]
+        end
+
+        def token
+          unless @token
+            @token = fetch_token
+            TBK::Webpay.logger.payment(self)
+          end
+
+          @token
         end
 
         def param
