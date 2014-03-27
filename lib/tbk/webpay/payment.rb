@@ -2,6 +2,7 @@ module TBK
   module Webpay
     class Payment
       attr_accessor :commerce
+      attr_accessor :request_ip
       attr_accessor :amount
       attr_accessor :order_id
       attr_accessor :session_id
@@ -11,6 +12,7 @@ module TBK
 
       def initialize(options = {})
         self.commerce = options[:commerce] || TBK::Commerce.default_commerce
+        self.request_ip = options[:request_ip]
         self.amount = options[:amount]
         self.order_id = options[:order_id]
         self.session_id = options[:session_id]
@@ -47,12 +49,21 @@ module TBK
         form
       end
 
+      def token
+        unless @token
+          @token = fetch_token
+          TBK::Webpay.logger.payment(self)
+        end
+
+        @token
+      end
+
       protected
         def process_url
           if self.commerce.test?
             "https://certificacion.webpay.cl:6443/filtroUnificado/bp_revision.cgi"
           else
-            "https://webpay.transbank.cl:443/cgi-bin/bp_revision.cgi"
+            "https://webpay.transbank.cl:443/filtroUnificado/bp_revision.cgi"
           end
         end
 
@@ -60,46 +71,45 @@ module TBK
           if self.commerce.test?
             "https://certificacion.webpay.cl:6443/filtroUnificado/bp_validacion.cgi"
           else
-            "https://webpay.transbank.cl:443/cgi-bin/bp_validacion.cgi"
+            "https://webpay.transbank.cl:443/filtroUnificado/bp_validacion.cgi"
           end
         end
 
-        def token
-          @token ||= begin
-            uri = URI.parse( self.validation_url )
+        def fetch_token
+          uri = URI.parse( self.validation_url )
 
-            response = nil
-            until response && response['location'].nil?
-              uri = URI.parse( response.nil? ? self.validation_url : response['location'] )
+          response = nil
+          until response && response['location'].nil?
+            uri = URI.parse( response.nil? ? self.validation_url : response['location'] )
 
-              response = Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
-                post = Net::HTTP::Post.new uri.path
-                post["user-agent"] = "TBK/#{ TBK::VERSION::GEM } (Ruby/#{ RUBY_VERSION }; +#{ TBK::VERSION::WEBSITE })"
-                post.set_form_data({
-                  'TBK_VERSION_KCC' => TBK::VERSION::KCC,
-                  'TBK_CODIGO_COMERCIO' => self.commerce.id,
-                  'TBK_KEY_ID' => self.commerce.webpay_key_id,
-                  'TBK_PARAM' => self.param
-                })
+            response = Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
+              post = Net::HTTP::Post.new uri.path
+              post["user-agent"] = "TBK/#{ TBK::VERSION::GEM } (Ruby/#{ RUBY_VERSION }; +#{ TBK::VERSION::WEBSITE })"
+              post.set_form_data({
+                'TBK_VERSION_KCC' => TBK::VERSION::KCC,
+                'TBK_CODIGO_COMERCIO' => self.commerce.id,
+                'TBK_KEY_ID' => self.commerce.webpay_key_id,
+                'TBK_PARAM' => self.param
+              })
 
-                # http.read_timeout = Webpay::Config.timeout
-                http.request post
-              end
+              # http.read_timeout = Webpay::Config.timeout
+              http.request post
             end
-
-            unless response.code == "200"
-              raise TBK::Webpay::PaymentError, "Payment token generation failed"
-            end
-
-            response = self.commerce.webpay_decrypt(response.body)
-
-            unless /ERROR=([a-zA-Z0-9]+)/.match(response)[1] == "0"
-              raise TBK::Webpay::PaymentError, "Payment token generation failed"
-            end
-
-            /TOKEN=([a-zA-Z0-9]+)/.match(response)[1]
           end
+
+          unless response.code == "200"
+            raise TBK::Webpay::PaymentError, "Payment token generation failed"
+          end
+
+          response = self.commerce.webpay_decrypt(response.body)[:body]
+
+          unless /ERROR=([a-zA-Z0-9]+)/.match(response)[1] == "0"
+            raise TBK::Webpay::PaymentError, "Payment token generation failed"
+          end
+
+          /TOKEN=([a-zA-Z0-9]+)/.match(response)[1]
         end
+
 
         def param
           @param ||= begin
