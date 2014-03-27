@@ -5,12 +5,12 @@ module TBK
     module Logger
       class OfficialLogger < BaseLogger
 
-        def directory
-          @directory
-        end
+        def directory(directory=nil)
+          if directory
+            @directory = Pathname(directory)
+          end
 
-        def directory=(directory)
-          @directory = Pathname(directory)
+          @directory
         end
 
         def payment(payment)
