@@ -58,7 +58,9 @@ module TBK
           end
 
           bitacora_log_file do |file|
-            file.write BITACORA_FORMAT % confirmation.params
+            file.write BITACORA_FORMAT % confirmation.params.merge({
+              commerce_id: confirmation.commerce.id
+            })
           end
         end
 
@@ -142,7 +144,7 @@ EOF
         BITACORA_FORMAT = %w{
           ACK;
           TBK_ORDEN_COMPRA=%<TBK_ORDEN_COMPRA>s;
-          TBK_CODIGO_COMERCIO=%<TBK_CODIGO_COMERCIO>s;
+          TBK_CODIGO_COMERCIO=%<commerce_id>s;
           TBK_TIPO_TRANSACCION=%<TBK_TIPO_TRANSACCION>s;
           TBK_RESPUESTA=%<TBK_RESPUESTA>s;
           TBK_MONTO=%<TBK_MONTO>s;
