@@ -1,4 +1,5 @@
 class WebpayController < ApplicationController
+  skip_before_filter :verify_authenticity_token, only: [:confirmation, :success, :failure]
 
   def show
 
