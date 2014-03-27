@@ -15,14 +15,16 @@ module TBK
       }
 
       attr_accessor :commerce
+      attr_accessor :request_ip
       attr_reader :raw
       attr_reader :params
 
       def initialize(options)
-        options = { :post => options } if options.is_a?(String)
+        options = { :body => options } if options.is_a?(String)
 
         self.commerce = options[:commerce] || TBK::Commerce.default_commerce
-        self.parse(options[:post])
+        self.request_ip = options[:request_ip]
+        self.parse(options[:body])
       end
 
       def acknowledge

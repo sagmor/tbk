@@ -2,6 +2,7 @@ module TBK
   module Webpay
     class Payment
       attr_accessor :commerce
+      attr_accessor :request_ip
       attr_accessor :amount
       attr_accessor :order_id
       attr_accessor :session_id
@@ -11,6 +12,7 @@ module TBK
 
       def initialize(options = {})
         self.commerce = options[:commerce] || TBK::Commerce.default_commerce
+        self.request_ip = options[:request_ip]
         self.amount = options[:amount]
         self.order_id = options[:order_id]
         self.session_id = options[:session_id]
@@ -52,7 +54,7 @@ module TBK
           if self.commerce.test?
             "https://certificacion.webpay.cl:6443/filtroUnificado/bp_revision.cgi"
           else
-            "https://webpay.transbank.cl:443/cgi-bin/bp_revision.cgi"
+            "https://webpay.transbank.cl:443/filtroUnificado/bp_revision.cgi"
           end
         end
 
@@ -60,7 +62,7 @@ module TBK
           if self.commerce.test?
             "https://certificacion.webpay.cl:6443/filtroUnificado/bp_validacion.cgi"
           else
-            "https://webpay.transbank.cl:443/cgi-bin/bp_validacion.cgi"
+            "https://webpay.transbank.cl:443/filtroUnificado/bp_validacion.cgi"
           end
         end
 
