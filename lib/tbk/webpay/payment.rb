@@ -49,6 +49,15 @@ module TBK
         form
       end
 
+      def token
+        unless @token
+          @token = fetch_token
+          TBK::Webpay.logger.payment(self)
+        end
+
+        @token
+      end
+
       protected
         def process_url
           if self.commerce.test?
@@ -101,14 +110,6 @@ module TBK
           /TOKEN=([a-zA-Z0-9]+)/.match(response)[1]
         end
 
-        def token
-          unless @token
-            @token = fetch_token
-            TBK::Webpay.logger.payment(self)
-          end
-
-          @token
-        end
 
         def param
           @param ||= begin
