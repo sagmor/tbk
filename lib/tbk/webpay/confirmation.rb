@@ -36,31 +36,31 @@ module TBK
       end
 
       def success?
-        self.params["TBK_RESPUESTA"] == "0"
+        self.params[:TBK_RESPUESTA] == "0"
       end
 
       def order_id
-        self.params["TBK_ORDEN_COMPRA"]
+        self.params[:TBK_ORDEN_COMPRA]
       end
 
       def session_id
-        self.params["TBK_ID_SESION"]
+        self.params[:TBK_ID_SESION]
       end
 
       def transaction_id
-        self.params["TBK_ID_TRANSACCION"]
+        self.params[:TBK_ID_TRANSACCION]
       end
 
       def amount
-        self.params["TBK_MONTO"].to_f/100
+        self.params[:TBK_MONTO].to_f/100
       end
 
       def authorization
-        self.params["TBK_CODIGO_AUTORIZACION"]
+        self.params[:TBK_CODIGO_AUTORIZACION]
       end
 
       def signature
-        self.params["TBK_MAC"]
+        self.params[:TBK_MAC]
       end
 
       def card_display_number
@@ -68,21 +68,21 @@ module TBK
       end
 
       def card_last_numbers
-        self.params["TBK_FINAL_NUMERO_TARJETA"]
+        self.params[:TBK_FINAL_NUMERO_TARJETA]
       end
 
       def message
-        RESPONSE_CODES[self.params["TBK_RESPUESTA"]]
+        RESPONSE_CODES[self.params[:TBK_RESPUESTA]]
       end
 
       def paid_at
         @paid_at ||= begin
           year = Time.now.year
-          month = self.params["TBK_FECHA_TRANSACCION"][0...2].to_i
-          day = self.params["TBK_FECHA_TRANSACCION"][2...4].to_i
-          hour = self.params["TBK_HORA_TRANSACCION"][0...2].to_i
-          minutes = self.params["TBK_HORA_TRANSACCION"][2...4].to_i
-          seconds = self.params["TBK_HORA_TRANSACCION"][4...6].to_i
+          month = self.params[:TBK_FECHA_TRANSACCION][0...2].to_i
+          day = self.params[:TBK_FECHA_TRANSACCION][2...4].to_i
+          hour = self.params[:TBK_HORA_TRANSACCION][0...2].to_i
+          minutes = self.params[:TBK_HORA_TRANSACCION][2...4].to_i
+          seconds = self.params[:TBK_HORA_TRANSACCION][4...6].to_i
 
           offset = if defined? TZInfo::Timezone
             # Use tzinfo gem if available
@@ -109,9 +109,9 @@ module TBK
           decrypted_params = self.commerce.webpay_decrypt(@raw_params['TBK_PARAM'])
           for line in decrypted_params[:body].split('#')
             key, value = *line.scan( %r{^([A-Za-z0-9_.]+)\=(.*)$} ).flatten
-            @params[key] = CGI.unescape(value)
+            @params[key.to_sym] = CGI.unescape(value)
           end
-          @params['TBK_MAC'] = decrypted_params[:signature]
+          @params[:TBK_MAC] = decrypted_params[:signature]
 
           TBK::Webpay.logger.confirmation(self)
 
