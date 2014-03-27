@@ -29,5 +29,13 @@ module TBK
       @logger
     end
     self.logger(:null)
+
+    module Config
+      def webpay_logger(logger=nil, &block)
+        TBK::Webpay.logger(logger, &block)
+      end
+    end
+
+    TBK::Config.send(:include, Config)
   end
 end
