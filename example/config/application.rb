@@ -10,6 +10,11 @@ module Example
       config.environment :test
       config.commerce_id 597026007976
       # config.commerce_key SOME_RSA_KEY
+
+      # Use official logger
+      config.webpay_logger :official do |logger|
+        logger.directory Rails.root.join('log/webpay')
+      end
     end
 
     # Configure the default encoding used in templates for Ruby 1.9.
