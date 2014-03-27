@@ -8,6 +8,7 @@ class WebpayController < ApplicationController
   def pay
     # Setup the payment
     @payment = TBK::Webpay::Payment.new({
+      request_ip: request.ip,
       amount: 5000.0,
       order_id: SecureRandom.hex(6),
       success_url: webpay_success_url,
@@ -23,7 +24,10 @@ class WebpayController < ApplicationController
   # Confirmation callback executed from Webpay servers
   def confirmation
     # Read the confirmation data from the request
-    @confirmation = TBK::Webpay::Confirmation.new(request.raw_post)
+    @confirmation = TBK::Webpay::Confirmation.new({
+      request_ip: request.ip,
+      body: request.raw_post
+    })
 
     # confirmation is invalid for some reason (wrong order_id or amount, double payment, etc...)
     if @confirmation.amount != 5000.0
