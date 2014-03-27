@@ -8,7 +8,9 @@ module TBK
         def directory(directory=nil)
           if directory
             @directory = Pathname(directory)
-            Dir.mkdir(@directory)
+
+            # Create the directory if needed
+            Dir.mkdir(@directory) unless Dir.exists?(@directory)
           end
 
           @directory
