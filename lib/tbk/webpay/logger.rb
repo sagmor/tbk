@@ -12,22 +12,22 @@ module TBK
       TBK::Webpay::Logger.const_get(logger_class_name)
     end
 
-    def self.logger
+    def self.logger(logger=nil, &block)
+      if logger
+        klass = case logger
+                when Symbol
+                  self.logger_for_symbol(logger)
+                when Class
+                  logger
+                else
+                  raise ArgumentError, "first argument must be a Symbol or a Class"
+                end
+
+        @logger = klass.new(&block)
+      end
+
       @logger
     end
-
-    def self.logger=(logger, &block)
-      klass = case logger
-              when Symbol
-                self.logger_for_symbol(logger)
-              when Class
-                logger
-              else
-                raise ArgumentError, "first argument must be a Symbol or a Class"
-              end
-
-      @logger = klass.new(&block)
-    end
-    self.logger = :null
+    self.logger(:null)
   end
 end
