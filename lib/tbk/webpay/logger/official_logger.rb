@@ -55,9 +55,7 @@ module TBK
           end
 
           bitacora_log_file do |file|
-            file.write BITACORA_FORMAT % confirmation.params.merge({
-              'TBK_MAC' => "PENDING!"
-            })
+            file.write BITACORA_FORMAT % confirmation.params
           end
         end
 
@@ -93,7 +91,6 @@ module TBK
 
             File.open(path, mode, &block)
           end
-
 
         # Formats
         # Here comes an ugly part.

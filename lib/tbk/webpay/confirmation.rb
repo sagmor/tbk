@@ -57,6 +57,10 @@ module TBK
         self.params["TBK_CODIGO_AUTORIZACION"]
       end
 
+      def signature
+        self.params["TBK_MAC"]
+      end
+
       def card_display_number
         "XXXX-XXXX-XXXX-#{ card_last_numbers }"
       end
@@ -101,10 +105,11 @@ module TBK
 
           @params = {}
           decrypted_params = self.commerce.webpay_decrypt(@raw_params['TBK_PARAM'])
-          for line in decrypted_params.split('#')
+          for line in decrypted_params[:body].split('#')
             key, value = *line.scan( %r{^([A-Za-z0-9_.]+)\=(.*)$} ).flatten
             @params[key] = CGI.unescape(value)
           end
+          @params['TBK_MAC'] = decrypted_params[:signature]
 
           TBK::Webpay.logger.confirmation(self)
 

@@ -58,7 +58,10 @@ module TBK
           raise TBK::Webpay::EncryptionError, "Invalid message signature"
         end
 
-        text
+        {
+          :body => text,
+          :signature => signature.unpack('H*').first
+        }
       rescue TBK::Error
         raise
       rescue => error
