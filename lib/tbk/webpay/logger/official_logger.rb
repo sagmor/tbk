@@ -36,7 +36,7 @@ module TBK
             file.write CONFIGURATION_FORMAT % {
               commerce_id: payment.commerce.id,
               server_ip: response_uri.host,
-              server_port: response_uri.ip,
+              server_port: response_uri.port,
               response_path: response_uri.path,
               webpay_server: (payment.commerce.test? ? 'https://certificacion.webpay.cl' : 'https://webpay.transbank.cl'),
               webpay_server_port: (payment.commerce.test? ? '6433' : '433')
