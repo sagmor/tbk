@@ -8,6 +8,7 @@ module TBK
         def directory(directory=nil)
           if directory
             @directory = Pathname(directory)
+            Dir.mkdir(@directory)
           end
 
           @directory
