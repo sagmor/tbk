@@ -28,6 +28,12 @@ Configure your commerce
 TBK.configure do |config|
   config.commerce_id YOUR_COMMERCE_ID
   config.commerce_key YOUR_RSA_KEY
+
+  # When certifying with Transbank you'll need to use the official logger
+  config.webpay_logger :official do |logger|
+    # On this path will be the config file and logs in the KCC format.
+    logger.directory Rails.root.join('log/webpay')
+  end
 end
 ```
 
