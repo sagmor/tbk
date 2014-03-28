@@ -72,7 +72,14 @@ module TBK
           end
 
           def now
-            Time.now
+            offset = if defined? TZInfo::Timezone
+              # Use tzinfo gem if available
+              TZInfo::Timezone.get('America/Santiago').period_for_utc(DateTime.new(year,month,day,hour,minutes,0)).utc_offset
+            else
+              -14400
+            end
+
+            Time.now.getlocal(offset)
           end
 
           def configuration_log_file(&block)
