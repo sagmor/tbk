@@ -12,3 +12,5 @@ group :docs do
   gem 'yard'
   gem 'redcarpet'
 end
+
+require "codeclimate-test-reporter"
