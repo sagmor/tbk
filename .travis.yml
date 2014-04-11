@@ -1,5 +1,6 @@
 language: ruby
 cache: bundler
+bundler_args: --without docs
 rvm:
   - 2.1.0
   - 2.0.0

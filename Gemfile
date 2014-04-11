@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 # Specify your gem's dependencies in tbk.gemspec
 gemspec
-gem 'coveralls', :require => false
 
 platforms :jruby do
   gem "jruby-openssl"
@@ -13,4 +12,7 @@ group :docs do
   gem 'redcarpet'
 end
 
-gem "codeclimate-test-reporter", group: :test, require: nil
+group :test do
+  gem "codeclimate-test-reporter", require: false
+end
+
