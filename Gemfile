@@ -13,4 +13,4 @@ group :docs do
   gem 'redcarpet'
 end
 
-require "codeclimate-test-reporter"
+gem "codeclimate-test-reporter", group: :test, require: nil
