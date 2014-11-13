@@ -116,36 +116,36 @@ module TBK
         BITACORA_LOG_FILE_NAME_FORMAT = "tbk_bitacora_TR_NORMAL_%s.log".freeze
         BITACORA_LOG_FILE_DATE_FORMAT = "%m%d".freeze
         PAYMENT_FORMAT = <<EOF.freeze
-          ;%<pid>-12s;   ;Filtro    ;Inicio                                  ;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;                    ;Inicio de filtrado
-          ;%<pid>-12s;   ;Filtro    ;tbk_param.txt                           ;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;                    ;Archivo parseado
-          ;%<pid>-12s;   ;Filtro    ;Terminado                               ;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;                    ;Datos Filtrados con exito
-%<transaction_id>-10s;%<pid>-12s;   ;pago      ;inicio                                  ;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Parseo realizado
-%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Datos en datos/tbk_config.dat
-%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Mac generado
-%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Construccion TBK_PARAM
-%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;TBK_PARAM encriptado
-%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Datos listos para ser enviados
-%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Medio 1: Transaccion segura
-%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Datos validados
-%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Token=%<token>s
-%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Redireccion web
-%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Todo OK
+          ;%<pid>-12s;   ;Filtro    ;Inicio                                  ;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;                    ;Inicio de filtrado
+          ;%<pid>-12s;   ;Filtro    ;tbk_param.txt                           ;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;                    ;Archivo parseado
+          ;%<pid>-12s;   ;Filtro    ;Terminado                               ;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;                    ;Datos Filtrados con exito
+%<transaction_id>-10s;%<pid>-12s;   ;pago      ;inicio                                  ;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Parseo realizado
+%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Datos en datos/tbk_config.dat
+%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Mac generado
+%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Construccion TBK_PARAM
+%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;TBK_PARAM encriptado
+%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Datos listos para ser enviados
+%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Medio 1: Transaccion segura
+%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Datos validados
+%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Token=%<token>s
+%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Redireccion web
+%<transaction_id>-10s;%<pid>-12s;   ;pago      ;%<webpay_server>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Todo OK
 EOF
 
         CONFIRMATION_FORMAT = <<EOF.freeze
-          ;%<pid>-12s;   ;resultado ;Desencriptando                          ;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;                    ;TBK_PARAM desencriptado
-          ;%<pid>-12s;   ;resultado ;Validacion                              ;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;                    ;Entidad emisora de los datos validada
-          ;%<pid>-12s;   ;resultado ;%<order_id>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;                    ;Parseo de los datos
-          ;%<pid>-12s;   ;resultado ;%<order_id>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;                    ;http://127.0.0.1/webpay/notify
-%<transaction_id>-10s;%<pid>-12s;   ;transacc  ;%<transaction_id>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;conectandose al port :(80)
-%<transaction_id>-10s;%<pid>-12s;   ;resultado ;logro abrir_conexion                    ;%<date>-14s;%<date>-6s;%<request_ip>-15s; 0 ;%<commerce_id>-20s;Abrio socket para conex-com
-%<transaction_id>-10s;%<pid>-12s;   ;transacc  ;%<transaction_id>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;POST a url http://127.0.0.1/webpay/notify
-%<transaction_id>-10s;%<pid>-12s;   ;transacc  ;%<transaction_id>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;mensaje enviado
-          ;%<pid>-12s;   ;check_mac ;                                        ;%<date>-14s;%<date>-6s;EMPTY          ;OK ;                    ;Todo OK
-%<transaction_id>-10s;%<pid>-12s;   ;transacc  ;%<transaction_id>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Llego ACK del Comercio
-%<transaction_id>-10s;%<pid>-12s;   ;resultado ;%<order_id>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;tienda acepto transaccion
-%<transaction_id>-10s;%<pid>-12s;   ;resultado ;%<order_id>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;respuesta enviada a TBK (ACK)
-%<transaction_id>-10s;%<pid>-12s;   ;resultado ;%<order_id>-40s;%<date>-14s;%<date>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Todo OK
+          ;%<pid>-12s;   ;resultado ;Desencriptando                          ;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;                    ;TBK_PARAM desencriptado
+          ;%<pid>-12s;   ;resultado ;Validacion                              ;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;                    ;Entidad emisora de los datos validada
+          ;%<pid>-12s;   ;resultado ;%<order_id>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;                    ;Parseo de los datos
+          ;%<pid>-12s;   ;resultado ;%<order_id>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;                    ;http://127.0.0.1/webpay/notify
+%<transaction_id>-10s;%<pid>-12s;   ;transacc  ;%<transaction_id>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;conectandose al port :(80)
+%<transaction_id>-10s;%<pid>-12s;   ;resultado ;logro abrir_conexion                    ;%<date>-14s;%<time>-6s;%<request_ip>-15s; 0 ;%<commerce_id>-20s;Abrio socket para conex-com
+%<transaction_id>-10s;%<pid>-12s;   ;transacc  ;%<transaction_id>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;POST a url http://127.0.0.1/webpay/notify
+%<transaction_id>-10s;%<pid>-12s;   ;transacc  ;%<transaction_id>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;mensaje enviado
+          ;%<pid>-12s;   ;check_mac ;                                        ;%<date>-14s;%<time>-6s;EMPTY          ;OK ;                    ;Todo OK
+%<transaction_id>-10s;%<pid>-12s;   ;transacc  ;%<transaction_id>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Llego ACK del Comercio
+%<transaction_id>-10s;%<pid>-12s;   ;resultado ;%<order_id>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;tienda acepto transaccion
+%<transaction_id>-10s;%<pid>-12s;   ;resultado ;%<order_id>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;respuesta enviada a TBK (ACK)
+%<transaction_id>-10s;%<pid>-12s;   ;resultado ;%<order_id>-40s;%<date>-14s;%<time>-6s;%<request_ip>-15s;OK ;%<commerce_id>-20s;Todo OK
 EOF
 
         BITACORA_FORMAT = %w{
