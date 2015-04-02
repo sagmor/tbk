@@ -82,7 +82,10 @@ module TBK
           until response && response['location'].nil?
             uri = URI.parse( response.nil? ? self.validation_url : response['location'] )
 
-            response = Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
+            response = Net::HTTP.start(uri.host, uri.port,{
+              :use_ssl => true,
+              :verify_mode => TBK.config.ssl_verify_mode
+            }) do |http|
               post = Net::HTTP::Post.new uri.path
               post["user-agent"] = "TBK/#{ TBK::VERSION::GEM } (Ruby/#{ RUBY_VERSION }; +#{ TBK::VERSION::WEBSITE })"
               post.set_form_data({

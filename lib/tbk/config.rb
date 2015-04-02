@@ -19,6 +19,11 @@ module TBK
       @environment = environment if environment
       (@environment || ENV['TBK_COMMERCE_ENVIRONMENT'] || :production).to_sym
     end
+
+    def ssl_verify_mode(mode = nil)
+      @ssl_verify_mode = mode if mode
+      @ssl_verify_mode || OpenSSL::SSL::VERIFY_PEER
+    end
   end
 
   # Returns the configuration object
