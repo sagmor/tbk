@@ -93,6 +93,7 @@ module TBK
               })
 
               # http.read_timeout = Webpay::Config.timeout
+              http.verify_mode = OpenSSL::SSL::VERIFY_NONE
               http.request post
             end
           end
