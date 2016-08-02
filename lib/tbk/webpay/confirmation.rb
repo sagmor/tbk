@@ -67,6 +67,14 @@ module TBK
         "XXXX-XXXX-XXXX-#{ card_last_numbers }"
       end
 
+      def payment_type
+        self.params[:TBK_TIPO_PAGO]
+      end
+
+      def installments
+        self.params[:TBK_NUMERO_CUOTAS]
+      end
+
       def card_last_numbers
         self.params[:TBK_FINAL_NUMERO_TARJETA]
       end
