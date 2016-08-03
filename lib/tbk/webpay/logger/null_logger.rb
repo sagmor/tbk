@@ -6,7 +6,7 @@ module TBK
           # NoOp
         end
 
-        def confirmation(confirmation)
+        def confirmation(confirmation, accept)
           # NoOp
         end
       end
