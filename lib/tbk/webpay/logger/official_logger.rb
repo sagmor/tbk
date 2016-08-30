@@ -44,7 +44,7 @@ module TBK
           end
         end
 
-        def confirmation(confirmation)
+        def confirmation(confirmation, accept)
           events_log_file do |file|
             file.write CONFIRMATION_FORMAT % {
               date: now.strftime(LOG_DATE_FORMAT),
@@ -59,7 +59,8 @@ module TBK
 
           bitacora_log_file do |file|
             file.write BITACORA_FORMAT % {'TBK_VCI' => ''}.merge(confirmation.params).merge({
-              commerce_id: confirmation.commerce.id
+              commerce_id: confirmation.commerce.id,
+              accept: accept
             })
           end
         end
@@ -149,7 +150,7 @@ EOF
 EOF
 
         BITACORA_FORMAT = %w{
-          ACK;
+          %<accept>s;
           TBK_ORDEN_COMPRA=%<TBK_ORDEN_COMPRA>s;
           TBK_CODIGO_COMERCIO=%<commerce_id>s;
           TBK_TIPO_TRANSACCION=%<TBK_TIPO_TRANSACCION>s;

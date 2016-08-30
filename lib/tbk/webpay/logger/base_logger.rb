@@ -16,7 +16,7 @@ module TBK
         end
 
         # Abstract method to log a payment confirmation
-        def confirmation(confirmation)
+        def confirmation(confirmation, accept)
           raise NotImplementedError, "TBK::Webpay::Logger::BaseLogger subclass must implement #confirmation method"
         end
 

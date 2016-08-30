@@ -28,10 +28,12 @@ module TBK
       end
 
       def acknowledge
+        TBK::Webpay.logger.confirmation(self,'ACK')
         self.commerce.webpay_encrypt('ACK')
       end
 
       def reject
+        TBK::Webpay.logger.confirmation(self, 'ERR')
         self.commerce.webpay_encrypt('ERR')
       end
 
@@ -120,8 +122,6 @@ module TBK
             @params[key.to_sym] = CGI.unescape(value)
           end
           @params[:TBK_MAC] = decrypted_params[:signature]
-
-          TBK::Webpay.logger.confirmation(self)
 
           true
         end
